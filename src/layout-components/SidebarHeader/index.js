@@ -45,9 +45,9 @@ const SidebarHeader = (props) => {
               />
             </div>
             <div className="app-sidebar-logo--text">
-              <span>General</span>
+              <span>Your</span>
 
-              <b>bamburgh</b>
+              <b>e-wallet</b>
             </div>
           </NavLink>
         </div>

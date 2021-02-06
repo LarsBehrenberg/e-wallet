@@ -61,7 +61,7 @@ const HeaderUserbox = () => {
       <Button
         variant="text"
         onClick={handleClick}
-        className="ml-2 btn-transition-none text-left ml-2 p-0 bg-transparent d-flex align-items-center"
+        className="mr-2 btn-transition-none text-left mr-2 p-0 bg-transparent d-flex align-items-center"
         disableRipple>
         <div className="d-block p-0 avatar-icon-wrapper">
           <StyledBadge
@@ -137,9 +137,11 @@ const HeaderUserbox = () => {
                   className="font-size-xxl text-info"
                 />
               </div>
-              <div className="pl-3 line-height-sm">
+              <div className="pl-3 line-height-sm text-center">
                 <b className="font-size-lg">$9,693</b>
-                <span className="text-black-50 d-block">revenue</span>
+                <span className="text-black-50 d-block">
+                  This year's income
+                </span>
               </div>
             </div>
           </div>

@@ -44,14 +44,14 @@ const Footer = (props) => {
           </List>
         </div>
         <div className="app-footer--second">
-          <span>Bamburgh React Admin Dashboard with Material-UI PRO</span> ©
-          2020 - crafted with <span className="text-danger px-1">❤</span> by{' '}
+          <span>e-wallet</span> © {new Date().getFullYear()} - crafted with{' '}
+          <span className="text-danger px-1">❤</span> by{' '}
           <a
-            href="https://uifort.com"
+            href="https://larsbehrenberg.com"
             target="_blank"
-            title="UiFort.com"
+            title="LarsBehrenberg.com"
             rel="noopener noreferrer">
-            UiFort.com
+            Lars Behrenberg
           </a>
         </div>
       </div>

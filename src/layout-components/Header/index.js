@@ -6,11 +6,8 @@ import { connect } from 'react-redux';
 
 import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
 
-import HeaderDots from '../../layout-components/HeaderDots';
-import HeaderDrawer from '../../layout-components/HeaderDrawer';
 import HeaderUserbox from '../../layout-components/HeaderUserbox';
 import HeaderSearch from '../../layout-components/HeaderSearch';
-import HeaderMenu from '../../layout-components/HeaderMenu';
 
 const Header = (props) => {
   const {
@@ -43,12 +40,11 @@ const Header = (props) => {
             </span>
           </button>
           <HeaderSearch />
-          <HeaderMenu />
         </div>
         <div className="app-header--pane">
-          <HeaderDots />
+          {/* <HeaderDots /> */}
           <HeaderUserbox />
-          <HeaderDrawer />
+          {/* <HeaderDrawer /> */}
         </div>
       </div>
     </>
