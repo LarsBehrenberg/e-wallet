@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
-import { Typography, Button } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import projectLogo from '../../../assets/images/react.svg';
 import { NavLink } from 'react-router-dom';
@@ -54,23 +54,15 @@ export default function LivePreviewExample() {
         </div>
 
         <div className="header-nav-actions flex-grow-0 flex-lg-grow-1 mr-2">
-          <span className="mr-3">
-            <Button
-              href="https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm btn-danger font-weight-bold">
+          <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+            <NavLink to="/dashboard" className="text-white">
               Sign up
-            </Button>
+            </NavLink>
           </span>
-          <span>
-            <Button
-              href="https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm btn-danger font-weight-bold">
+          <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+            <NavLink to="/dashboard" className="text-white">
               Login
-            </Button>
+            </NavLink>
           </span>
           {/* <span className="d-block d-lg-none">
             <button
