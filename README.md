@@ -1,10 +1,10 @@
 <p align="center">
-    <a href="https://uifort.com" title="UiFort.com">
+    <!-- <a href="https://uifort.com" title="UiFort.com">
         <img width=256px height=256px src="https://demo.uifort.com/github-static-assets/ui-fort-logo.png" alt="UiFort">
-    </a>
+    </a> -->
 </p>
 <h1 align="center">
-    <a href="https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro">Bamburgh React Admin Dashboard with Material-UI PRO</a>
+    <a href="https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro">E-Wallet | Your eletronical wallet to your physical one</a>
     <br>
     <a href="https://twitter.com/intent/tweet?url=https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro&text=View any of the 5+ live previews we&#39;ve set up to learn why this dashboard template is the last one you&#39;ll ever need!">
         <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social" />
@@ -15,12 +15,12 @@
 </h1>
 <div align="center">
 
-  ![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-  [![GitHub Issues open](https://img.shields.io/github/issues/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/issues)
-  [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg?maxAge=2592000)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/issues?q=is%3Aissue+is%3Aclosed)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/pulls)
-  [![License](https://img.shields.io/badge/license-UiFort-blue.svg)](/LICENSE)
+![version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues open](https://img.shields.io/github/issues/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/issues)
+[![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg?maxAge=2592000)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/uifort/bamburgh-react-admin-dashboard-material-ui-pro.svg)](https://github.com/uifort/bamburgh-react-admin-dashboard-material-ui-pro/pulls)
+[![License](https://img.shields.io/badge/license-UiFort-blue.svg)](/LICENSE)
 
 </div>
 
@@ -133,4 +133,3 @@
 <p><b>Discord: </b><a href="https://discord.gg/mddFBQX">https:&#x2F;&#x2F;discord.gg&#x2F;mddFBQX</a></p>
 <p><b>Dribbble: </b><a href="https://dribbble.com/UiFort">https:&#x2F;&#x2F;dribbble.com&#x2F;UiFort</a></p>
 <p><b>Github: </b><a href="https://github.com/uifort">https:&#x2F;&#x2F;github.com&#x2F;uifort</a></p>
-
