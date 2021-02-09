@@ -70,6 +70,7 @@
     "react-text-mask": "5.4.3",
     "react-trend": "1.2.5",
     "redux": "4.0.5",
+    "redux-logger": "^3.0.6",
     "yup": "0.28.5"
   },
   "scripts": {
