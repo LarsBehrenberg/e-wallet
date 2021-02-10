@@ -41,16 +41,13 @@ export default function LivePreviewExample() {
                 lg={10}
                 xl={8}
                 className="mx-auto py-3 py-lg-5">
-                <h2 className="display-3 font-weight-bold">
-                  Bamburgh React Admin Dashboard with Material-UI PRO
-                </h2>
-                <p className="font-size-xl py-3 text-white-50">
-                  Premium admin template powered by the most popular UI
-                  components framework available for React: Material-UI.
-                  Features hundreds of examples making web development fast and
-                  easy. Start from one of the individual apps included or from
-                  the general dashboard and build beautiful scalable
-                  applications and presentation websites.
+                <h2 className="display-3 font-weight-bold">E-Wallet</h2>
+                <h3>Your eletronical wallet to your physical one</h3>
+                <p className="py-3 text-white-50">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
+                  consequuntur asperiores, fugit ipsum vero et, eius quis
+                  molestias culpa ducimus inventore perspiciatis tenetur quod,
+                  ad omnis beatae ex sapiente laboriosam!
                 </p>
                 <div className="py-4 mb-4">
                   <Button
@@ -61,9 +58,7 @@ export default function LivePreviewExample() {
                     <span className="btn-wrapper--icon">
                       <FontAwesomeIcon icon={['fas', 'arrow-right']} />
                     </span>
-                    <span className="btn-wrapper--label">
-                      Browse Dashboards
-                    </span>
+                    <span className="btn-wrapper--label">Sign Up Now</span>
                   </Button>
                   <Button
                     href="https://uifort.com/template/bamburgh-react-admin-dashboard-material-ui-pro"
@@ -71,7 +66,7 @@ export default function LivePreviewExample() {
                     target="_blank"
                     size="large"
                     className="bg-white-10 text-white shadow-second-sm btn-pill ml-3">
-                    <span>Product Details</span>
+                    <span>Learn More</span>
                   </Button>
                 </div>
               </Grid>
