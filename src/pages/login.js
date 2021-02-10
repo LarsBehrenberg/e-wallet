@@ -18,6 +18,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
+import { Redirect } from 'react-router';
 
 const Login = (props) => {
   const [checked1, setChecked1] = useState(true);
@@ -26,9 +27,9 @@ const Login = (props) => {
     setChecked1(event.target.checked);
   };
 
-  console.log(props);
-
-  return (
+  return props.UserOptions.currentUser ? (
+    <Redirect to="/dashboard" />
+  ) : (
     <>
       <div className="app-wrapper bg-white min-vh-100">
         <div className="app-main min-vh-100">
@@ -149,9 +150,7 @@ const Login = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    state
-  };
+  return state;
 };
 
 export default connect(mapStateToProps)(Login);
