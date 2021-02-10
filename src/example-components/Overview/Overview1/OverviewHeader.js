@@ -61,7 +61,7 @@ const LivePreviewExample = ({ currentUser }) => {
           </NavLink>
         </div>
 
-        <div className="header-nav-actions flex-grow-0 flex-lg-grow-1 mr-2">
+        <div className="header-nav-actions flex-grow-0 flex-lg-grow-1">
           {currentUser ? (
             <>
               <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
@@ -69,7 +69,7 @@ const LivePreviewExample = ({ currentUser }) => {
                   Dashboard
                 </NavLink>
               </span>
-              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+              <span className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
                 <span onClick={() => auth.signOut()} className="text-white">
                   Sign Out
                 </span>
@@ -83,7 +83,7 @@ const LivePreviewExample = ({ currentUser }) => {
                 </NavLink>
               </span>
 
-              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+              <span className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
                 <NavLink to="/login" className="text-white">
                   Login
                 </NavLink>
