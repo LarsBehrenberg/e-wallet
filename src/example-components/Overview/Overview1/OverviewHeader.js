@@ -55,12 +55,12 @@ export default function LivePreviewExample() {
 
         <div className="header-nav-actions flex-grow-0 flex-lg-grow-1 mr-2">
           <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-            <NavLink to="/dashboard" className="text-white">
+            <NavLink to="/signup" className="text-white">
               Sign up
             </NavLink>
           </span>
           <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-            <NavLink to="/dashboard" className="text-white">
+            <NavLink to="/login" className="text-white">
               Login
             </NavLink>
           </span>

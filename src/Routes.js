@@ -26,10 +26,11 @@ import PageError505 from './example-pages/PageError505';
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const Login = lazy(() => import('./pages/login'));
+const SignUp = lazy(() => import('./pages/signup'));
 
 // Example Pages
 
-const Overview = lazy(() => import('./example-pages/Overview'));
+const Index = lazy(() => import('./pages/index'));
 
 const DashboardAnalytics = lazy(() =>
   import('./example-pages/DashboardAnalytics')
@@ -111,8 +112,8 @@ const Routes = () => {
       <AnimatePresence>
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
-            <Redirect exact from="/" to="/Overview" />
-            <Route path={['/Overview']}>
+            <Redirect exact from="/overview" to="/" />
+            <Route exact path={['/']}>
               <PresentationLayout>
                 <Switch location={location} key={location.pathname}>
                   <motion.div
@@ -121,7 +122,7 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route path="/Overview" component={Overview} />
+                    <Route exact path="/" component={Index} />
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -178,6 +179,7 @@ const Routes = () => {
             <Route
               path={[
                 '/login',
+                '/signup',
                 '/PageLoginOverlay',
                 '/PageRegisterOverlay',
                 '/PageRecoverOverlay',
@@ -194,6 +196,7 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/login" component={Login} />
+                    <Route path="/signup" component={SignUp} />
                     <Route
                       path="/PageRegisterOverlay"
                       component={PageRegisterOverlay}

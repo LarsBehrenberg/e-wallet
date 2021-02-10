@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 // Firebase
@@ -18,7 +19,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
-import { Redirect } from 'react-router';
 
 const Login = (props) => {
   const [checked1, setChecked1] = useState(true);
