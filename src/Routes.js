@@ -22,9 +22,14 @@ import PageError404 from './example-pages/PageError404';
 import PageError500 from './example-pages/PageError500';
 import PageError505 from './example-pages/PageError505';
 
-const Overview = lazy(() => import('./example-pages/Overview'));
+// Real Pages
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const Login = lazy(() => import('./pages/login'));
+
+// Example Pages
+
+const Overview = lazy(() => import('./example-pages/Overview'));
 
 const DashboardAnalytics = lazy(() =>
   import('./example-pages/DashboardAnalytics')
@@ -34,7 +39,7 @@ const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
 const PageChat = lazy(() => import('./example-pages/PageChat'));
 const PageProjects = lazy(() => import('./example-pages/PageProjects'));
 const PageFileManager = lazy(() => import('./example-pages/PageFileManager'));
-const PageLoginOverlay = lazy(() => import('./example-pages/PageLoginOverlay'));
+// const PageLoginOverlay = lazy(() => import('./example-pages/PageLoginOverlay'));
 const PageRegisterOverlay = lazy(() =>
   import('./example-pages/PageRegisterOverlay')
 );
@@ -172,6 +177,7 @@ const Routes = () => {
 
             <Route
               path={[
+                '/login',
                 '/PageLoginOverlay',
                 '/PageRegisterOverlay',
                 '/PageRecoverOverlay',
@@ -187,10 +193,7 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route
-                      path="/PageLoginOverlay"
-                      component={PageLoginOverlay}
-                    />
+                    <Route path="/login" component={Login} />
                     <Route
                       path="/PageRegisterOverlay"
                       component={PageRegisterOverlay}

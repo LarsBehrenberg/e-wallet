@@ -1,25 +1,21 @@
-export const SET_LOGGED_IN = 'USER_OPTIONS/SET_LOGGED_IN';
+export const SET_CURRENT_USER = 'USER_OPTIONS/SET_CURRENT_USER';
 
-export const setSidebarShadow = (loggedIn) => ({
-  type: SET_LOGGED_IN,
-  loggedIn
+export const setCurrentUser = (currentUser) => ({
+  type: SET_CURRENT_USER,
+  currentUser
 });
 
 export default function reducer(
   state = {
-    // Sidebar
-
-    loggedIn: false
+    currentUser: null
   },
   action
 ) {
   switch (action.type) {
-    // Sidebar
-
-    case SET_LOGGED_IN:
+    case SET_CURRENT_USER:
       return {
         ...state,
-        loggedIn: action.loggedIn
+        currentUser: action.currentUser
       };
     default:
       break;

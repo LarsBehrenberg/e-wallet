@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import configureStore from './config/configureStore';
-import { Provider } from 'react-redux';
+
+// Redux
+import { connect } from 'react-redux';
+import { setCurrentUser } from './reducers/UserOptions';
+
+// Firebase
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+// Components
 import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
+
+// Styles
 import './assets/base.scss';
 
+// Icons
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   fab,
@@ -255,19 +265,46 @@ library.add(
   faSignOutAlt,
   faLink
 );
-const store = configureStore();
+
 class App extends Component {
+  unsubscribeFromAuth = null;
+
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        });
+      }
+
+      setCurrentUser(userAuth);
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
   render() {
     return (
-      <Provider store={store}>
-        <BrowserRouter>
-          <ScrollToTop>
-            <Routes />
-          </ScrollToTop>
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <ScrollToTop>
+          <Routes />
+        </ScrollToTop>
+      </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user))
+});
+
+export default connect(null, mapDispatchToProps)(App);
