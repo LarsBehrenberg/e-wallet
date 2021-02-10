@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+// Firebase
+import { auth } from '../../../firebase/firebase.utils';
+
+// Styles
 import { Typography } from '@material-ui/core';
 
+// Assets
 import projectLogo from '../../../assets/images/react.svg';
-import { NavLink } from 'react-router-dom';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -27,21 +33,23 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired
 };
 
-export default function LivePreviewExample() {
+const LivePreviewExample = ({ currentUser }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
+
+  console.log(currentUser);
 
   return (
     <>
       <div className="header-nav-wrapper header-nav-wrapper-lg navbar-dark">
         <div className="app-nav-logo">
           <NavLink
-            to="/Overview"
-            title="Bamburgh React Admin Dashboard with Material-UI PRO"
+            to="/"
+            title="E-Wallet | Your electronical wallet to your physical one"
             className="app-nav-logo app-nav-logo--light">
             <div className="app-nav-logo--icon rounded-lg shadow-second-sm bg-secondary border-0">
               <img
-                alt="Bamburgh React Admin Dashboard with Material-UI PRO"
+                alt="E-Wallet | Your electronical wallet to your physical one"
                 src={projectLogo}
               />
             </div>
@@ -54,16 +62,34 @@ export default function LivePreviewExample() {
         </div>
 
         <div className="header-nav-actions flex-grow-0 flex-lg-grow-1 mr-2">
-          <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-            <NavLink to="/signup" className="text-white">
-              Sign up
-            </NavLink>
-          </span>
-          <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-            <NavLink to="/login" className="text-white">
-              Login
-            </NavLink>
-          </span>
+          {currentUser ? (
+            <>
+              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+                <NavLink to="/dashboard" className="text-white">
+                  Dashboard
+                </NavLink>
+              </span>
+              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+                <span onClick={() => auth.signOut()} className="text-white">
+                  Sign Out
+                </span>
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+                <NavLink to="/signup" className="text-white">
+                  Sign up
+                </NavLink>
+              </span>
+
+              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+                <NavLink to="/login" className="text-white">
+                  Login
+                </NavLink>
+              </span>
+            </>
+          )}
           {/* <span className="d-block d-lg-none">
             <button
               onClick={toggle}
@@ -317,4 +343,10 @@ export default function LivePreviewExample() {
       />
     </>
   );
-}
+};
+
+const mapStateToProps = ({ UserOptions }) => {
+  return UserOptions;
+};
+
+export default connect(mapStateToProps)(LivePreviewExample);
