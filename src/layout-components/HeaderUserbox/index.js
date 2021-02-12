@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -45,7 +46,7 @@ const StyledBadge = withStyles({
   }
 })(Badge);
 
-const HeaderUserbox = () => {
+const HeaderUserbox = ({ currentUser }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -56,6 +57,13 @@ const HeaderUserbox = () => {
     setAnchorEl(null);
   };
 
+  // Defining user props
+  const name = currentUser !== null ? currentUser.displayName : '';
+  const email = currentUser !== null ? currentUser.email : '';
+  const profileImage = currentUser !== null ? currentUser.photoURL : '';
+
+  console.log(currentUser);
+
   return (
     <>
       <Button
@@ -64,24 +72,26 @@ const HeaderUserbox = () => {
         className="mr-2 btn-transition-none text-left mr-2 p-0 bg-transparent d-flex align-items-center"
         disableRipple>
         <div className="d-block p-0 avatar-icon-wrapper">
-          <StyledBadge
-            overlap="circle"
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right'
-            }}
-            badgeContent=" "
-            classes={{ badge: 'bg-success badge-circle border-0' }}
-            variant="dot">
-            <div className="avatar-icon rounded">
-              <img src={avatar7} alt="..." />
-            </div>
-          </StyledBadge>
+          {profileImage ? (
+            <StyledBadge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right'
+              }}
+              badgeContent=" "
+              classes={{ badge: 'bg-success badge-circle border-0' }}
+              variant="dot">
+              <div className="avatar-icon rounded">
+                <img src={profileImage} alt="..." />
+              </div>
+            </StyledBadge>
+          ) : null}
         </div>
 
         <div className="d-none d-xl-block pl-2">
-          <div className="font-weight-bold pt-2 line-height-1">Emma Taylor</div>
-          <span className="text-black-50">Senior Accountant</span>
+          <div className="font-weight-bold pt-2 line-height-1">{name}</div>
+          <span className="text-black-50">{email}</span>
         </div>
         <span className="pl-1 pl-xl-3">
           <FontAwesomeIcon icon={['fas', 'angle-down']} className="opacity-5" />
@@ -181,4 +191,6 @@ const HeaderUserbox = () => {
   );
 };
 
-export default HeaderUserbox;
+const mapStateToProps = ({ UserOptions: { currentUser } }) => ({ currentUser });
+
+export default connect(mapStateToProps)(HeaderUserbox);
