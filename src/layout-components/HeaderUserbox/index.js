@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
+// Firebase
+import { auth } from '../../firebase/firebase.utils';
+
+// Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Typography,
@@ -9,10 +13,10 @@ import {
   Button,
   List,
   ListItem,
-  Tooltip,
   Divider
 } from '@material-ui/core';
 
+// Styles
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledBadge = withStyles({
@@ -56,11 +60,9 @@ const HeaderUserbox = ({ currentUser }) => {
   };
 
   // Defining user props
-  const name = currentUser !== null ? currentUser.displayName : '';
-  const email = currentUser !== null ? currentUser.email : '';
-  const profileImage = currentUser !== null ? currentUser.photoURL : '';
-
-  console.log(currentUser);
+  const name = currentUser.displayName;
+  const email = currentUser.email;
+  const profileImage = currentUser.photoURL;
 
   return (
     <>
@@ -111,17 +113,17 @@ const HeaderUserbox = ({ currentUser }) => {
         classes={{ list: 'p-0' }}
         onClose={handleClose}>
         <div className="dropdown-menu-lg overflow-hidden p-0">
-          <div className="d-flex px-3 pt-3 align-items-center justify-content-between">
-            <Typography className="text-capitalize pl-1 font-weight-bold text-primary">
+          <div className="d-flex px-3 pt-3 align-items-center text-center justify-content-between">
+            <Typography className="text-capitalize mx-auto pl-1 font-weight-bold text-primary">
               <span>Profile Options</span>
             </Typography>
-            <div className="font-size-xs pr-1">
+            {/* <div className="font-size-xs pr-1">
               <Tooltip title="Change settings" arrow>
                 <a href="#/" onClick={(e) => e.preventDefault()}>
                   <FontAwesomeIcon icon={['fas', 'plus-circle']} />
                 </a>
               </Tooltip>
-            </div>
+            </div> */}
           </div>
           <List
             component="div"
@@ -132,12 +134,15 @@ const HeaderUserbox = ({ currentUser }) => {
             <ListItem button className="d-block text-left">
               Profile settings
             </ListItem>
-            <ListItem button className="d-block text-left">
-              Active tasks
+            <ListItem
+              button
+              className="d-block text-left"
+              onClick={() => auth.signOut()}>
+              Sign Out
             </ListItem>
           </List>
           <Divider className="w-100" />
-          <div className="d-flex py-3 justify-content-center">
+          {/* <div className="d-flex py-3 justify-content-center">
             <div className="d-flex align-items-center">
               <div>
                 <FontAwesomeIcon
@@ -182,7 +187,7 @@ const HeaderUserbox = ({ currentUser }) => {
                 </span>
               </Button>
             </Tooltip>
-          </div>
+          </div> */}
         </div>
       </Menu>
     </>

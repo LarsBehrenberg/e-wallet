@@ -11,6 +11,7 @@ import { NavLink } from 'react-router-dom';
 import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
 
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
 import BallotTwoToneIcon from '@material-ui/icons/BallotTwoTone';
 import LinkTwoToneIcon from '@material-ui/icons/LinkTwoTone';
@@ -50,9 +51,25 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/dashboard">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <AccountBalanceIcon />
                 </span>
                 Overview
+                <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
+                  <ChevronRightTwoToneIcon />
+                </span>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/transactions">
+                <span className="sidebar-icon">
+                  <BallotTwoToneIcon />
+                </span>
+                Transactions
                 <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
                   <ChevronRightTwoToneIcon />
                 </span>

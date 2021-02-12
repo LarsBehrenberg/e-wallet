@@ -21,10 +21,12 @@ import {
 import PageError404 from './example-pages/PageError404';
 import PageError500 from './example-pages/PageError500';
 import PageError505 from './example-pages/PageError505';
+import { connect } from 'react-redux';
 
 // Real Pages
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const Transactions = lazy(() => import('./pages/transactions'));
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/signup'));
 
@@ -49,7 +51,7 @@ const PageRecoverOverlay = lazy(() =>
 );
 const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
-const Routes = () => {
+const Routes = ({ currentUser }) => {
   const location = useLocation();
 
   const pageVariants = {
@@ -128,23 +130,29 @@ const Routes = () => {
               </PresentationLayout>
             </Route>
 
-            <Route path={['/dashboard', '/DashboardAnalytics']}>
-              <LeftSidebar>
-                <Switch location={location} key={location.pathname}>
-                  <motion.div
-                    initial="initial"
-                    animate="in"
-                    exit="out"
-                    variants={pageVariants}
-                    transition={pageTransition}>
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route
-                      path="/DashboardAnalytics"
-                      component={DashboardAnalytics}
-                    />
-                  </motion.div>
-                </Switch>
-              </LeftSidebar>
+            <Route
+              path={['/dashboard', '/transactions', '/DashboardAnalytics']}>
+              {currentUser ? (
+                <LeftSidebar>
+                  <Switch location={location} key={location.pathname}>
+                    <motion.div
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}>
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/transactions" component={Transactions} />
+                      <Route
+                        path="/DashboardAnalytics"
+                        component={DashboardAnalytics}
+                      />
+                    </motion.div>
+                  </Switch>
+                </LeftSidebar>
+              ) : (
+                <Redirect to="/" />
+              )}
             </Route>
 
             <Route
@@ -219,4 +227,8 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+const mapStateToProps = ({ UserOptions: { currentUser } }) => ({
+  currentUser
+});
+
+export default connect(mapStateToProps)(Routes);
