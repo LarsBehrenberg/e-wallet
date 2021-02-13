@@ -39,10 +39,10 @@ body {
 
   &--inner {
     overflow: hidden;
-    padding: $layout-spacer;
-@include media-breakpoint-down(sm) {
-    padding: $layout-spacer / 3;
-  }
+    // padding: $layout-spacer;
+    @include media-breakpoint-down(sm) {
+      // padding: $layout-spacer / 3;
+    }
     display: flex;
     flex: 1;
 
