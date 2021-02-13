@@ -225,7 +225,7 @@ export default function LivePreviewExample() {
         <Dialog
           classes={{ paper: 'modal-content' }}
           fullWidth
-          maxWidgh="lg"
+          // maxWidgh="lg"
           open={open2}
           onClose={handleClose2}
           aria-labelledby="form-dialog-title2">
