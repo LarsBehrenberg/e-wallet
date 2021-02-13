@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import PageRegisterBasic1 from '../example-components/PageRegisterBasic/PageRegisterBasic1';
 
-const SignUp = (props) => {
-  return props.UserOptions.currentUser ? (
+const SignUp = ({ uid }) => {
+  return uid ? (
     <Redirect to="/dashboard" />
   ) : (
     <>
@@ -14,8 +14,6 @@ const SignUp = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return state;
-};
+const mapStateToProps = ({ firebase }) => ({ uid: firebase.auth.uid });
 
 export default connect(mapStateToProps)(SignUp);

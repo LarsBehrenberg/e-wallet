@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useFirebase } from 'react-redux-firebase';
 
 // Firebase
 // import { signInWithGoogle } from '../firebase/firebase.utils';
@@ -21,15 +22,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-const Login = ({ signInWithGoogle, uid }) => {
+const Login = ({ uid }) => {
   const [checked1, setChecked1] = useState(true);
 
   const handleChange1 = (event) => {
     setChecked1(event.target.checked);
   };
 
-  if (uid) return <Redirect to="/dashboard" />;
+  const firebase = useFirebase();
 
+  function loginWithGoogle() {
+    return firebase.login({
+      provider: 'google',
+      type: 'popup'
+    });
+  }
+
+  if (uid) return <Redirect to="/dashboard" />;
   return (
     <>
       <div className="app-wrapper bg-white min-vh-100">
@@ -49,7 +58,7 @@ const Login = ({ signInWithGoogle, uid }) => {
                       <Button
                         className="m-2 btn-pill px-4 font-weight-bold btn-google"
                         size="small"
-                        onClick={() => signInWithGoogle()}>
+                        onClick={loginWithGoogle}>
                         <span className="btn-wrapper--icon">
                           <FontAwesomeIcon icon={['fab', 'google']} />
                         </span>

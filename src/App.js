@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 // Components
@@ -259,16 +259,14 @@ library.add(
   faLink
 );
 
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <ScrollToTop>
-          <Routes />
-        </ScrollToTop>
-      </BrowserRouter>
-    );
-  }
-}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <ScrollToTop>
+        <Routes />
+      </ScrollToTop>
+    </BrowserRouter>
+  );
+};
 
 export default App;
