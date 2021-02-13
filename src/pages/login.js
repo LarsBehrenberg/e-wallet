@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 // Firebase
-import { signInWithGoogle } from '../firebase/firebase.utils';
+// import { signInWithGoogle } from '../firebase/firebase.utils';
+import { signInWithGoogle } from '../reducers/AuthReducer';
 
 // Components
 import {
@@ -18,12 +21,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-const Login = () => {
+const Login = ({ signInWithGoogle, uid }) => {
   const [checked1, setChecked1] = useState(true);
 
   const handleChange1 = (event) => {
     setChecked1(event.target.checked);
   };
+
+  if (uid) return <Redirect to="/dashboard" />;
 
   return (
     <>
@@ -145,4 +150,16 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  const uid = state.firebase.auth.uid;
+  return {
+    uid: uid
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signInWithGoogle: () => dispatch(signInWithGoogle())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

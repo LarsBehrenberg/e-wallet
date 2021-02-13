@@ -2,11 +2,11 @@ import { firebaseReducer } from 'react-redux-firebase';
 import { firestoreReducer } from 'redux-firestore';
 
 import ThemeOptions from './ThemeOptions';
-import UserOptions from './UserOptions';
+import authReducer from './AuthReducer';
 
 export default {
   ThemeOptions,
-  UserOptions,
-  firebaseReducer,
-  firestoreReducer
+  auth: authReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer
 };
