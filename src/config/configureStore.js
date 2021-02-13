@@ -1,7 +1,22 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+
 import reducers from '../reducers';
+
+const persistConfig = {
+  key: 'root',
+  storage
+};
+
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
+    ...reducers
+  })
+);
 
 const middlewares = [thunk];
 
@@ -10,10 +25,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default function configureStore() {
-  return createStore(
-    combineReducers({
-      ...reducers
-    }),
-    applyMiddleware(...middlewares)
-  );
+  let store = createStore(persistedReducer, applyMiddleware(...middlewares));
+  let persistor = persistStore(store);
+  return { store, persistor };
 }
