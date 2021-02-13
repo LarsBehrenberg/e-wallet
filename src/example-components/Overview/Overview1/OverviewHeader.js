@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-
-// Firebase
-import { auth } from '../../../firebase/firebase.utils';
 
 // Styles
 import { Typography } from '@material-ui/core';
@@ -33,11 +29,9 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired
 };
 
-const LivePreviewExample = ({ currentUser }) => {
+const LivePreviewExample = () => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
-
-  console.log(currentUser);
 
   return (
     <>
@@ -62,7 +56,7 @@ const LivePreviewExample = ({ currentUser }) => {
         </div>
 
         <div className="header-nav-actions flex-grow-0 flex-lg-grow-1">
-          {currentUser ? (
+          {/* {currentUser ? (
             <>
               <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
                 <NavLink to="/dashboard" className="text-white">
@@ -75,21 +69,21 @@ const LivePreviewExample = ({ currentUser }) => {
                 </span>
               </span>
             </>
-          ) : (
-            <>
-              <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-                <NavLink to="/signup" className="text-white">
-                  Sign up
-                </NavLink>
-              </span>
+          ) : ( */}
+          <>
+            <span className="mr-3 rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+              <NavLink to="/signup" className="text-white">
+                Sign up
+              </NavLink>
+            </span>
 
-              <span className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
-                <NavLink to="/login" className="text-white">
-                  Login
-                </NavLink>
-              </span>
-            </>
-          )}
+            <span className="rounded-lg text-nowrap font-size-xs text-uppercase shadow-second-sm bg-danger d-flex align-items-center py-2 px-3 font-weight-bold">
+              <NavLink to="/login" className="text-white">
+                Login
+              </NavLink>
+            </span>
+          </>
+          {/* )} */}
           {/* <span className="d-block d-lg-none">
             <button
               onClick={toggle}
@@ -345,8 +339,4 @@ const LivePreviewExample = ({ currentUser }) => {
   );
 };
 
-const mapStateToProps = ({ UserOptions }) => {
-  return UserOptions;
-};
-
-export default connect(mapStateToProps)(LivePreviewExample);
+export default LivePreviewExample;

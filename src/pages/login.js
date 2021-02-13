@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
 
 // Firebase
 import { signInWithGoogle } from '../firebase/firebase.utils';
@@ -20,16 +18,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-const Login = (props) => {
+const Login = () => {
   const [checked1, setChecked1] = useState(true);
 
   const handleChange1 = (event) => {
     setChecked1(event.target.checked);
   };
 
-  return props.UserOptions.currentUser ? (
-    <Redirect to="/dashboard" />
-  ) : (
+  return (
     <>
       <div className="app-wrapper bg-white min-vh-100">
         <div className="app-main min-vh-100">
@@ -149,8 +145,4 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return state;
-};
-
-export default connect(mapStateToProps)(Login);
+export default Login;

@@ -21,7 +21,6 @@ import {
 import PageError404 from './example-pages/PageError404';
 import PageError500 from './example-pages/PageError500';
 import PageError505 from './example-pages/PageError505';
-import { connect } from 'react-redux';
 
 // Real Pages
 
@@ -51,7 +50,7 @@ const PageRecoverOverlay = lazy(() =>
 );
 const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
-const Routes = ({ currentUser }) => {
+const Routes = () => {
   const location = useLocation();
 
   const pageVariants = {
@@ -132,27 +131,24 @@ const Routes = ({ currentUser }) => {
 
             <Route
               path={['/dashboard', '/transactions', '/DashboardAnalytics']}>
-              {currentUser ? (
-                <LeftSidebar>
-                  <Switch location={location} key={location.pathname}>
-                    <motion.div
-                      initial="initial"
-                      animate="in"
-                      exit="out"
-                      variants={pageVariants}
-                      transition={pageTransition}>
-                      <Route path="/dashboard" component={Dashboard} />
-                      <Route path="/transactions" component={Transactions} />
-                      <Route
-                        path="/DashboardAnalytics"
-                        component={DashboardAnalytics}
-                      />
-                    </motion.div>
-                  </Switch>
-                </LeftSidebar>
-              ) : (
-                <Redirect to="/" />
-              )}
+              <LeftSidebar>
+                <Switch location={location} key={location.pathname}>
+                  <motion.div
+                    initial="initial"
+                    animate="in"
+                    exit="out"
+                    variants={pageVariants}
+                    transition={pageTransition}>
+                    <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/transactions" component={Transactions} />
+                    <Route
+                      path="/DashboardAnalytics"
+                      component={DashboardAnalytics}
+                    />
+                  </motion.div>
+                </Switch>
+              </LeftSidebar>
+              )
             </Route>
 
             <Route
@@ -227,8 +223,4 @@ const Routes = ({ currentUser }) => {
   );
 };
 
-const mapStateToProps = ({ UserOptions: { currentUser } }) => ({
-  currentUser
-});
-
-export default connect(mapStateToProps)(Routes);
+export default Routes;

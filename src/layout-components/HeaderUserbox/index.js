@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-
-// Firebase
-import { auth } from '../../firebase/firebase.utils';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,7 +44,7 @@ const StyledBadge = withStyles({
   }
 })(Badge);
 
-const HeaderUserbox = ({ currentUser }) => {
+const HeaderUserbox = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -60,10 +56,10 @@ const HeaderUserbox = ({ currentUser }) => {
   };
 
   // Defining user props
-  const name = currentUser.displayName;
-  const email = currentUser.email;
-  const profileImage = currentUser.photoURL;
-
+  const name = 'Lars';
+  const email = 'l.behre';
+  const profileImage =
+    'https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg';
   return (
     <>
       <Button
@@ -137,7 +133,8 @@ const HeaderUserbox = ({ currentUser }) => {
             <ListItem
               button
               className="d-block text-left"
-              onClick={() => auth.signOut()}>
+              // onClick={() => auth.signOut()}
+            >
               Sign Out
             </ListItem>
           </List>
@@ -194,6 +191,4 @@ const HeaderUserbox = ({ currentUser }) => {
   );
 };
 
-const mapStateToProps = ({ UserOptions: { currentUser } }) => ({ currentUser });
-
-export default connect(mapStateToProps)(HeaderUserbox);
+export default HeaderUserbox;
