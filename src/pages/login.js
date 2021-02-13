@@ -156,10 +156,8 @@ const mapStateToProps = (state) => {
     uid: uid
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signInWithGoogle: () => dispatch(signInWithGoogle())
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  signInWithGoogle: () => dispatch(signInWithGoogle())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

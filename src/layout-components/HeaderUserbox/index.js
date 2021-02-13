@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+// Redux
+import { connect } from 'react-redux';
+import { signOut } from '../../reducers/AuthReducer';
+
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -44,7 +48,7 @@ const StyledBadge = withStyles({
   }
 })(Badge);
 
-const HeaderUserbox = () => {
+const HeaderUserbox = ({ name, email, photoURL, signOut }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -56,9 +60,8 @@ const HeaderUserbox = () => {
   };
 
   // Defining user props
-  const name = 'Lars';
-  const email = 'l.behre';
   const profileImage =
+    photoURL ||
     'https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg';
   return (
     <>
@@ -133,8 +136,7 @@ const HeaderUserbox = () => {
             <ListItem
               button
               className="d-block text-left"
-              // onClick={() => auth.signOut()}
-            >
+              onClick={() => signOut()}>
               Sign Out
             </ListItem>
           </List>
@@ -191,4 +193,14 @@ const HeaderUserbox = () => {
   );
 };
 
-export default HeaderUserbox;
+const mapStateToProps = ({ firebase: { auth } }) => ({
+  name: auth.displayName,
+  email: auth.email,
+  photoURL: auth.photoURL
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOut())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderUserbox);
