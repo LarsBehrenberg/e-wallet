@@ -7,6 +7,9 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import MuiTheme from './theme';
 
+// Redux
+import { connect } from 'react-redux';
+
 // Layout Blueprints
 
 import {
@@ -50,7 +53,7 @@ const PageRecoverOverlay = lazy(() =>
 );
 const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
-const Routes = () => {
+const Routes = ({ uid }) => {
   const location = useLocation();
 
   const pageVariants = {
@@ -131,23 +134,27 @@ const Routes = () => {
 
             <Route
               path={['/dashboard', '/transactions', '/DashboardAnalytics']}>
-              <LeftSidebar>
-                <Switch location={location} key={location.pathname}>
-                  <motion.div
-                    initial="initial"
-                    animate="in"
-                    exit="out"
-                    variants={pageVariants}
-                    transition={pageTransition}>
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/transactions" component={Transactions} />
-                    <Route
-                      path="/DashboardAnalytics"
-                      component={DashboardAnalytics}
-                    />
-                  </motion.div>
-                </Switch>
-              </LeftSidebar>
+              {!uid ? (
+                <Redirect to="/" />
+              ) : (
+                <LeftSidebar>
+                  <Switch location={location} key={location.pathname}>
+                    <motion.div
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}>
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/transactions" component={Transactions} />
+                      <Route
+                        path="/DashboardAnalytics"
+                        component={DashboardAnalytics}
+                      />
+                    </motion.div>
+                  </Switch>
+                </LeftSidebar>
+              )}
               )
             </Route>
 
@@ -223,4 +230,8 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+const mapStateToProps = (state) => ({
+  uid: state.firebase.auth.uid
+});
+
+export default connect(mapStateToProps)(Routes);
