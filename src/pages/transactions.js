@@ -1,9 +1,83 @@
 import React from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// Redux & Firebase
+import { useSelector } from 'react-redux';
+import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+
+// Components
+import AddTransactionModal from '../components/addTransactionModal';
 import { Table, Checkbox, Card, CardContent, Button } from '@material-ui/core';
 
+const Transaction = ({
+  description,
+  type,
+  wallet,
+  amount,
+  date,
+  currency,
+  category
+}) => (
+  <tr>
+    <td>
+      <Checkbox color="primary" id="checkboxProjects15" />
+    </td>
+    <td>
+      <div className="d-flex">
+        <div>
+          <span className="font-weight-bold text-black">
+            {new Date(date.seconds * 1000).toISOString().split('T')[0]}
+          </span>
+        </div>
+      </div>
+    </td>
+
+    <td>
+      <div className="d-flex">
+        <div>
+          <span className="font-weight-bold text-black">{description}</span>
+          <span className="text-black-50 d-block">{category}</span>
+        </div>
+      </div>
+    </td>
+    <td className="text-center">
+      <span className="font-weight-bold ">{type}</span>
+    </td>
+    <td className="text-center">
+      <span
+        className={`font-weight-bold ${
+          type === 'Expense' ? 'text-danger' : 'text-success'
+        }`}>
+        {type === 'Expense' ? '-' : ''}
+        {`${amount} (${currency})`}
+      </span>
+    </td>
+    <td className="text-center">
+      <span className="font-weight-bold">{wallet}</span>
+    </td>
+  </tr>
+);
+
 export default function Transactions() {
+  const { uid } = useSelector((state) => state.firebase.auth);
+  const { transactions } = useSelector((state) => state.firestore.data);
+
+  useFirestoreConnect([
+    {
+      collection: 'users',
+      doc: uid,
+      subcollections: [{ collection: 'transactions' }],
+      storeAs: 'transactions'
+    }
+  ]);
+
+  if (!isLoaded(transactions)) {
+    return <div>Loading...</div>;
+  }
+
+  if (isEmpty(transactions)) {
+    return <div>Todos List Is Empty</div>;
+  }
+
   return (
     <>
       <Card className="card-box mb-spacing-6-x2">
@@ -35,53 +109,32 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="">
-                  <Checkbox color="primary" id="checkboxProjects15" />
-                </td>
-                <td>
-                  <div className="d-flex">
-                    <div>
-                      <span className="font-weight-bold text-black">
-                        {new Date().toJSON().slice(0, 10).replace(/-/g, '/')}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-
-                <td>
-                  <div className="d-flex">
-                    <div>
-                      <span className="font-weight-bold text-black">
-                        ETC fee
-                      </span>
-                      <span className="text-black-50 d-block">
-                        Transportation
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                <td className="text-center">
-                  <span className="font-weight-bold ">Expense</span>
-                </td>
-                <td className="text-center">
-                  <span className="font-weight-bold text-danger">-$254</span>
-                </td>
-                <td className="text-center">
-                  <span className="font-weight-bold">Visa</span>
-                </td>
-              </tr>
+              {Object.keys(transactions).map((key, id) => (
+                <Transaction
+                  key={key}
+                  id={id}
+                  date={transactions[key].date}
+                  name={transactions[key].name}
+                  currency={transactions[key].currency}
+                  amount={transactions[key].amount}
+                  wallet={transactions[key].wallet}
+                  description={transactions[key].description}
+                  type={transactions[key].type}
+                  category={transactions[key].category}
+                />
+              ))}
             </tbody>
           </Table>
           <div className="divider mb-3" />
-          <div className="text-center">
+          <AddTransactionModal />
+          {/* <div className="text-center">
             <Button variant="contained" color="primary">
               <span className="btn-wrapper--label">View more</span>
               <span className="btn-wrapper--icon">
                 <FontAwesomeIcon icon={['fas', 'chevron-right']} />
               </span>
             </Button>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </>

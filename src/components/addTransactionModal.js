@@ -24,7 +24,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 const AddTransactionModal = () => {
   // handle form state
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
