@@ -8,6 +8,16 @@ import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import AddTransactionModal from '../components/addTransactionModal';
 import { Table, Checkbox, Card, CardContent, Button } from '@material-ui/core';
 
+// TRANSACTION REMOVE DUMMY FUNCTION
+// const remove = () => {
+//   firestore
+//     .collection('users')
+//     .doc(uid)
+//     .collection('transactions')
+//     .doc('bjAW4G045rDZ1cC1Xzr6')
+//     .delete();
+// };
+
 const Transaction = ({
   description,
   type,
@@ -70,14 +80,6 @@ export default function Transactions() {
     }
   ]);
 
-  if (!isLoaded(transactions)) {
-    return <div>Loading...</div>;
-  }
-
-  if (isEmpty(transactions)) {
-    return <div>Todos List Is Empty</div>;
-  }
-
   return (
     <>
       <Card className="card-box mb-spacing-6-x2">
@@ -90,43 +92,54 @@ export default function Transactions() {
 
           <div className="card-header--actions">
             <div>
-              <Button size="small" className="btn-neutral-success">
-                Actions
+              <AddTransactionModal />
+              <Button size="small" className="btn-neutral-danger">
+                More Actions
               </Button>
             </div>
           </div>
         </div>
         <CardContent className="px-0 pt-2 pb-3">
           <Table className="table table-borderless table-hover table-alternate text-nowrap mb-0">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Date</th>
-                <th>Name</th>
-                <th className="text-center">Income/Expense</th>
-                <th className="text-center">Amount</th>
-                <th className="text-center">Wallet</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(transactions).map((key, id) => (
-                <Transaction
-                  key={key}
-                  id={id}
-                  date={transactions[key].date}
-                  name={transactions[key].name}
-                  currency={transactions[key].currency}
-                  amount={transactions[key].amount}
-                  wallet={transactions[key].wallet}
-                  description={transactions[key].description}
-                  type={transactions[key].type}
-                  category={transactions[key].category}
-                />
-              ))}
-            </tbody>
+            {!isLoaded(transactions) && (
+              <div className="text-center my-4">Loading...</div>
+            )}
+            {isEmpty(transactions) && (
+              <div className="text-center my-4">
+                There are currently no transactions in your database.
+              </div>
+            )}
+            {isLoaded(transactions) && !isEmpty(transactions) && (
+              <>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th className="text-center">Income/Expense</th>
+                    <th className="text-center">Amount</th>
+                    <th className="text-center">Wallet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.keys(transactions).map((key, id) => (
+                    <Transaction
+                      key={key}
+                      id={id}
+                      date={transactions[key].date}
+                      name={transactions[key].name}
+                      currency={transactions[key].currency}
+                      amount={transactions[key].amount}
+                      wallet={transactions[key].wallet}
+                      description={transactions[key].description}
+                      type={transactions[key].type}
+                      category={transactions[key].category}
+                    />
+                  ))}
+                </tbody>
+              </>
+            )}
           </Table>
-          <div className="divider mb-3" />
-          <AddTransactionModal />
           {/* <div className="text-center">
             <Button variant="contained" color="primary">
               <span className="btn-wrapper--label">View more</span>

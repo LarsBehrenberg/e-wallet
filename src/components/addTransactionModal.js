@@ -104,8 +104,11 @@ const AddTransactionModal = () => {
 
   return (
     <>
-      <Button className="m-2 btn-primary" onClick={handleClickOpen}>
-        Enter transaction
+      <Button
+        size="small"
+        className="m-2 btn-neutral-success"
+        onClick={handleClickOpen}>
+        Add Transaction
       </Button>
       <Dialog
         classes={{ paper: 'modal-content' }}
