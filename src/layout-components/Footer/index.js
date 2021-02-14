@@ -24,22 +24,15 @@ const Footer = (props) => {
               className="rounded-sm"
               button
               component={NavLink}
-              to="/DashboardAnalytics">
-              <span>Analytics</span>
+              to="/dashboard">
+              <span>Dashboard</span>
             </ListItem>
             <ListItem
               className="rounded-sm"
               button
               component={NavLink}
-              to="/DashboardStatistics">
-              <span>Statistics</span>
-            </ListItem>
-            <ListItem
-              className="rounded-sm"
-              button
-              component={NavLink}
-              to="/Overview">
-              <span>Overview</span>
+              to="/transactions">
+              <span>Transactions</span>
             </ListItem>
           </List>
         </div>

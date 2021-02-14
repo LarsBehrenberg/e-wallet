@@ -14,9 +14,6 @@ import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
 import BallotTwoToneIcon from '@material-ui/icons/BallotTwoTone';
-import LinkTwoToneIcon from '@material-ui/icons/LinkTwoTone';
-
-import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 
 const SidebarMenu = (props) => {
   const { setSidebarToggleMobile } = props;
@@ -26,12 +23,6 @@ const SidebarMenu = (props) => {
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const toggleDashboard = (event) => {
     setDashboardOpen(!dashboardOpen);
-    event.preventDefault();
-  };
-
-  const [applicationOpen, setApplicationOpen] = useState(false);
-  const toggleApplication = (event) => {
-    setApplicationOpen(!applicationOpen);
     event.preventDefault();
   };
 
@@ -53,7 +44,7 @@ const SidebarMenu = (props) => {
                 <span className="sidebar-icon">
                   <AccountBalanceIcon />
                 </span>
-                Overview
+                Dashboard
                 <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
                   <ChevronRightTwoToneIcon />
                 </span>
@@ -83,7 +74,7 @@ const SidebarMenu = (props) => {
                 <span className="sidebar-icon">
                   <VerifiedUserTwoToneIcon />
                 </span>
-                <span className="sidebar-item-label">Dashboards</span>
+                <span className="sidebar-item-label">Analytics</span>
                 <span className="sidebar-icon-indicator">
                   <ChevronRightTwoToneIcon />
                 </span>
@@ -94,20 +85,26 @@ const SidebarMenu = (props) => {
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/DashboardCommerce">
-                      Commerce
+                      Yearly
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/DashboardAnalytics">
-                      Analytics
+                      Monthly
+                    </NavLink>
+
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/DashboardAnalytics">
+                      Weekly
                     </NavLink>
                   </li>
                 </ul>
               </Collapse>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#/"
                 onClick={toggleApplication}
@@ -140,7 +137,7 @@ const SidebarMenu = (props) => {
                   </li>
                 </ul>
               </Collapse>
-            </li>
+            </li> */}
           </ul>
         </div>
       </PerfectScrollbar>
