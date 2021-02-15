@@ -28,6 +28,7 @@ import PageError505 from './example-pages/PageError505';
 // Real Pages
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
 const Transactions = lazy(() => import('./pages/transactions'));
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/signup'));
@@ -35,10 +36,6 @@ const SignUp = lazy(() => import('./pages/signup'));
 // Example Pages
 
 const Index = lazy(() => import('./pages/index'));
-
-const DashboardAnalytics = lazy(() =>
-  import('./example-pages/DashboardAnalytics')
-);
 
 const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
 const PageChat = lazy(() => import('./example-pages/PageChat'));
@@ -132,8 +129,7 @@ const Routes = ({ uid }) => {
               </PresentationLayout>
             </Route>
 
-            <Route
-              path={['/dashboard', '/transactions', '/DashboardAnalytics']}>
+            <Route path={['/dashboard', '/transactions', '/profile-settings']}>
               {!uid ? (
                 <Redirect to="/" />
               ) : (
@@ -146,11 +142,11 @@ const Routes = ({ uid }) => {
                       variants={pageVariants}
                       transition={pageTransition}>
                       <Route path="/dashboard" component={Dashboard} />
-                      <Route path="/transactions" component={Transactions} />
                       <Route
-                        path="/DashboardAnalytics"
-                        component={DashboardAnalytics}
+                        path="/profile-settings"
+                        component={ProfileSettings}
                       />
+                      <Route path="/transactions" component={Transactions} />
                     </motion.div>
                   </Switch>
                 </LeftSidebar>

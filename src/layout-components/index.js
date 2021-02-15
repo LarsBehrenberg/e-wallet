@@ -11,6 +11,7 @@ export { default as SidebarUserbox } from './SidebarUserbox';
 export { default as SidebarMenu } from './SidebarMenu';
 export { default as SidebarFooter } from './SidebarFooter';
 export { default as PageTitle } from './PageTitle';
+export { default as PageTitleWithoutButtons } from './PageTitleWithoutButtons';
 export { default as Footer } from './Footer';
 export { default as ThemeConfigurator } from './ThemeConfigurator';
 export { default as PromoSection } from './PromoSection';
