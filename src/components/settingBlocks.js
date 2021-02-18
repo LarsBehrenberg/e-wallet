@@ -5,12 +5,37 @@ import { useSelector } from 'react-redux';
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 
 // Components
-import { Grid, Card, Dialog, TextField, Button } from '@material-ui/core';
+import {
+  Grid,
+  Card,
+  Dialog,
+  TextField,
+  Button,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Input,
+  Chip
+} from '@material-ui/core';
 
 // Assets & Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import illustration1 from '../assets/images/illustrations/pack1/analysis.svg';
 import illustration2 from '../assets/images/illustrations/pack1/businessman.svg';
+
+// Currencies
+const possibleCurrencies = ['EUR', 'USD', 'JPY'];
+
+const ITEM_HEIGHT = 24;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 6.5,
+      width: 200
+    }
+  }
+};
 
 export default function LivePreviewExample() {
   // Access firestore data and set state
@@ -32,6 +57,8 @@ export default function LivePreviewExample() {
   const [userIncomeCategories, setUserIncomeCategories] = useState([]);
   const [newExpenseCategory, setNewExpenseCategory] = useState('');
   const [newIncomeCategory, setNewIncomeCategory] = useState('');
+
+  const [currencies, setCurrencies] = useState([]);
 
   // Modal toggle state
   const [modal1, setModal1] = useState(false);
@@ -346,9 +373,36 @@ export default function LivePreviewExample() {
               </Grid>
               <Grid item xs={12} md={6} className="mx-auto mt-4">
                 <p className="font-weight-bold mb-1">Your Currencies</p>
-                <p className="text-muted mb-2 font-size-sm">
-                  Click a category to remove it from the list.
-                </p>
+
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel id="mutiple-chip-label">Currencies</InputLabel>
+                  <Select
+                    labelId="mutiple-chip-label"
+                    id="mutiple-chip"
+                    multiple
+                    variant="outlined"
+                    value={currencies}
+                    onChange={(e) => setCurrencies(e.target.value)}
+                    input={<Input id="select-multiple-chip" />}
+                    renderValue={(selected) => (
+                      <div>
+                        {selected.map((value, index) => (
+                          <Chip
+                            className={`bg-primary text-white mr-2`}
+                            key={value}
+                            label={value}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    MenuProps={MenuProps}>
+                    {possibleCurrencies.map((item) => (
+                      <MenuItem key={item} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
 
