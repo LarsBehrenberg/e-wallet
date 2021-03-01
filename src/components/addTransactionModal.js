@@ -39,22 +39,31 @@ const AddTransactionModal = () => {
     wallet: ['Visa', 'Cash', 'Debit'],
     currency: [
       {
-        value: 'EUR',
-        label: '€'
-      },
-      {
         value: 'JPY',
         label: '¥'
+      },
+      {
+        value: 'EUR',
+        label: '€'
       }
     ]
   };
 
-  const [currency, setCurrency] = useState('EUR');
+  const [description, setDescription] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [currency, setCurrency] = useState('JPY');
+  const [category, setCategory] = useState('Food');
   const [wallet, setWallet] = useState(selectionOptions.wallet[0]);
   const [type, setType] = useState(selectionOptions.type[1]);
 
   const handleSelectChange = (event) => {
     switch (event.target.id) {
+      case 'textfield-description':
+        setDescription(event.target.value);
+        return;
+      case 'textfield-amount':
+        setAmount(event.target.value);
+        return;
       case 'select-currency':
         setCurrency(event.target.value);
         return;
@@ -63,6 +72,9 @@ const AddTransactionModal = () => {
         return;
       case 'select-type':
         setType(event.target.value);
+        return;
+      case 'select-category':
+        setCategory(event.target.value);
         return;
       default:
         return;
@@ -80,26 +92,38 @@ const AddTransactionModal = () => {
   // handle firestore
   const firestore = useFirestore();
   const { uid } = useSelector((state) => state.firebase.auth);
+  const { user } = useSelector((state) => state.firestore.data);
 
   const addNewTransaction = () => {
-    firestore
-      .collection('users')
-      .doc(uid)
-      .collection('transactions')
-      .add({
-        description: 'someting',
-        amount: 284,
-        currency: currency,
-        wallet: wallet,
-        type: type,
-        date: selectedDate
-      })
-      .then((docRef) => {
-        docRef.update({
-          transactionsID: docRef.id
+    if (
+      description &&
+      amount &&
+      currency &&
+      wallet &&
+      type &&
+      selectedDate &&
+      category
+    ) {
+      firestore
+        .collection('users')
+        .doc(uid)
+        .collection('transactions')
+        .add({
+          description,
+          amount,
+          currency,
+          wallet,
+          type,
+          date: selectedDate,
+          category
+        })
+        .then((docRef) => {
+          docRef.update({
+            transactionsID: docRef.id
+          });
         });
-      });
-    handleClose();
+      handleClose();
+    }
   };
 
   return (
@@ -132,6 +156,8 @@ const AddTransactionModal = () => {
                     size="small"
                     id="textfield-description"
                     label="Description"
+                    value={description}
+                    onChange={handleSelectChange}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -151,8 +177,10 @@ const AddTransactionModal = () => {
                     }}
                     variant="outlined"
                     size="small"
-                    id="textfield-value"
-                    label="Value"
+                    onChange={handleSelectChange}
+                    value={amount}
+                    id="textfield-amount"
+                    label="Amount"
                     type="number"
                   />
 
@@ -224,6 +252,41 @@ const AddTransactionModal = () => {
                       </option>
                     ))}
                   </TextField>
+                  {type === 'Expense' ? (
+                    <TextField
+                      style={{ minWidth: '150px', marginTop: '1rem' }}
+                      id="select-category"
+                      select
+                      label="Category"
+                      value={category}
+                      onChange={handleSelectChange}
+                      SelectProps={{
+                        native: true
+                      }}>
+                      {user?.expenseCategories.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </TextField>
+                  ) : (
+                    <TextField
+                      style={{ minWidth: '150px', marginTop: '1rem' }}
+                      id="select-category"
+                      select
+                      label="Category"
+                      value={category}
+                      onChange={handleSelectChange}
+                      SelectProps={{
+                        native: true
+                      }}>
+                      {user?.incomeCategories.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </TextField>
+                  )}
                 </div>
                 <div className="text-center">
                   <Button
