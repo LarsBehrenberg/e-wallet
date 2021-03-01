@@ -2,7 +2,7 @@ import React, { useState, useReducer, useContext } from 'react';
 
 // Redux & Firestore
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
+import { useFirestore } from 'react-redux-firebase';
 
 // Components
 import {
@@ -119,16 +119,7 @@ function appReducer(state, action) {
 
 export default function LivePreviewExample() {
   // Access firestore data and set state
-  const { uid } = useSelector((state) => state.firebase.auth);
   const { user } = useSelector((state) => state.firestore.data);
-
-  useFirestoreConnect([
-    {
-      collection: 'users',
-      doc: uid,
-      storeAs: 'user'
-    }
-  ]);
 
   const initialState = {
     userName: '',

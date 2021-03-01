@@ -9,6 +9,7 @@ import MuiTheme from './theme';
 
 // Redux
 import { connect } from 'react-redux';
+import { useFirestoreConnect } from 'react-redux-firebase';
 
 // Layout Blueprints
 
@@ -52,6 +53,14 @@ const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
 const Routes = ({ uid }) => {
   const location = useLocation();
+
+  useFirestoreConnect([
+    {
+      collection: 'users',
+      doc: uid,
+      storeAs: 'user'
+    }
+  ]);
 
   const pageVariants = {
     initial: {
