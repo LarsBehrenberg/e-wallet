@@ -90,46 +90,44 @@ export default function Transactions() {
           </div>
         </div>
         <CardContent className="px-0 pt-2 pb-3">
-          <Table className="table table-borderless table-hover table-alternate text-nowrap mb-0">
-            {!isLoaded(transactions) && (
-              <div className="text-center my-4">Loading...</div>
-            )}
-            {isEmpty(transactions) && (
-              <div className="text-center my-4">
-                There are currently no transactions in your database.
-              </div>
-            )}
-            {isLoaded(transactions) && !isEmpty(transactions) && (
-              <>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th className="text-center">Income/Expense</th>
-                    <th className="text-center">Amount</th>
-                    <th className="text-center">Wallet</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.keys(transactions).map((key, id) => (
-                    <Transaction
-                      key={key}
-                      id={id}
-                      date={transactions[key].date}
-                      name={transactions[key].name}
-                      currency={transactions[key].currency}
-                      amount={transactions[key].amount}
-                      wallet={transactions[key].wallet}
-                      description={transactions[key].description}
-                      type={transactions[key].type}
-                      category={transactions[key].category}
-                    />
-                  ))}
-                </tbody>
-              </>
-            )}
-          </Table>
+          {!isLoaded(transactions) && (
+            <div className="text-center my-4">Loading...</div>
+          )}
+          {isLoaded(transactions) && isEmpty(transactions) && (
+            <div className="text-center my-4">
+              There are currently no transactions in your database.
+            </div>
+          )}
+          {isLoaded(transactions) && !isEmpty(transactions) && (
+            <Table className="table table-borderless table-hover table-alternate text-nowrap mb-0">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th className="text-center">Income/Expense</th>
+                  <th className="text-center">Amount</th>
+                  <th className="text-center">Wallet</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(transactions).map((key, id) => (
+                  <Transaction
+                    key={key}
+                    id={id}
+                    date={transactions[key].date}
+                    name={transactions[key].name}
+                    currency={transactions[key].currency}
+                    amount={transactions[key].amount}
+                    wallet={transactions[key].wallet}
+                    description={transactions[key].description}
+                    type={transactions[key].type}
+                    category={transactions[key].category}
+                  />
+                ))}
+              </tbody>
+            </Table>
+          )}
           {/* <div className="text-center">
             <Button variant="contained" color="primary">
               <span className="btn-wrapper--label">View more</span>
