@@ -2,7 +2,7 @@ import React from 'react';
 
 // Redux & Firebase
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { isLoaded, isEmpty } from 'react-redux-firebase';
 
 // Components
 import AddTransactionModal from '../components/addTransactionModal';
@@ -68,24 +68,14 @@ const Transaction = ({
 );
 
 export default function Transactions() {
-  const { uid } = useSelector((state) => state.firebase.auth);
   const { transactions } = useSelector((state) => state.firestore.data);
-
-  useFirestoreConnect([
-    {
-      collection: 'users',
-      doc: uid,
-      subcollections: [{ collection: 'transactions' }],
-      storeAs: 'transactions'
-    }
-  ]);
 
   return (
     <>
       <Card className="card-box mb-spacing-6-x2">
         <div className="card-header">
           <div className="card-header--title">
-            <h4 className="font-size-lg mb-0 py-2 font-weight-bold">
+            <h4 className="font-size-lg mb-0 py-2 font-w eight-bold">
               Transaction list
             </h4>
           </div>

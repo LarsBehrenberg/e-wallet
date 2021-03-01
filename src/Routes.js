@@ -59,6 +59,12 @@ const Routes = ({ uid }) => {
       collection: 'users',
       doc: uid,
       storeAs: 'user'
+    },
+    {
+      collection: 'users',
+      doc: uid,
+      subcollections: [{ collection: 'transactions' }],
+      storeAs: 'transactions'
     }
   ]);
 
