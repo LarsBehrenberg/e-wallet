@@ -115,6 +115,7 @@ const AddTransactionModal = () => {
           wallet,
           type,
           date: selectedDate,
+          createdAt: new Date(),
           category
         })
         .then((docRef) => {
