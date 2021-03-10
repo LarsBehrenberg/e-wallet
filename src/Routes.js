@@ -31,6 +31,7 @@ import PageError505 from './example-pages/PageError505';
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
 const Transactions = lazy(() => import('./pages/transactions'));
+const Import = lazy(() => import('./pages/import'));
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/signup'));
 
@@ -144,7 +145,13 @@ const Routes = ({ uid }) => {
               </PresentationLayout>
             </Route>
 
-            <Route path={['/dashboard', '/transactions', '/profile-settings']}>
+            <Route
+              path={[
+                '/dashboard',
+                '/transactions',
+                '/profile-settings',
+                '/import'
+              ]}>
               {!uid ? (
                 <Redirect to="/" />
               ) : (
@@ -157,6 +164,7 @@ const Routes = ({ uid }) => {
                       variants={pageVariants}
                       transition={pageTransition}>
                       <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/import" component={Import} />
                       <Route
                         path="/profile-settings"
                         component={ProfileSettings}

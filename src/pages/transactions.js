@@ -60,7 +60,7 @@ const Transaction = ({
             type === 'Expense' ? 'text-danger' : 'text-success'
           }`}>
           {type === 'Expense' ? '-' : ''}
-          {`${amount} (${currency})`}
+          {`${amount.JPY.toLocaleString('en-US')} (${'JPY'})`}
         </span>
       </td>
       <td className="text-center">
@@ -73,6 +73,8 @@ const Transaction = ({
 export default function Transactions() {
   const { transactions } = useSelector((state) => state.firestore.data);
   const [state, setState] = useState([]);
+
+  console.log(state);
 
   const firestore = useFirestore();
   const { uid } = useSelector((state) => state.firebase.auth);
@@ -180,14 +182,14 @@ export default function Transactions() {
                     .sort(function (a, b) {
                       // Sort by
                       return (
-                        new Date(b.date.seconds) - new Date(a.date.seconds) ||
-                        new Date(b.createdAt.seconds) -
-                          new Date(a.createdAt.seconds)
+                        new Date(b?.date.seconds) - new Date(a?.date.seconds) ||
+                        new Date(b?.createdAt.seconds) -
+                          new Date(a?.createdAt.seconds)
                       );
                     })
                     .map(({ ...props }) => (
                       <Transaction
-                        key={props.transactionsID}
+                        key={`${props.description}-${props.date}-${props.amount}`}
                         {...props}
                         setChecked={setChecked}
                       />
