@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux';
 import { isLoaded, isEmpty } from 'react-redux-firebase';
 import { useFirestore } from 'react-redux-firebase';
 
+// Date Utils
+import { format } from 'date-fns';
+
 // Components
 import AddTransactionModal from '../components/addTransactionModal';
 import { Table, Checkbox, Card, CardContent, Button } from '@material-ui/core';
@@ -34,7 +37,7 @@ const Transaction = ({
         <div className="d-flex">
           <div>
             <span className="font-weight-bold text-black">
-              {new Date(date.seconds * 1000).toISOString().split('T')[0]}
+              {format(new Date(date.seconds * 1000), 'do LLLL yyyy')}
             </span>
           </div>
         </div>
