@@ -74,6 +74,16 @@ export const receiveIncomeExpenseCategories = async (uid) => {
   return categories;
 };
 
+// Get transactions
+export const receiveTransactions = async (uid) => {
+  if (!uid) return;
+  const userRef = await firestore.collection(`users/${uid}/transactions`).get();
+  const transactions = userRef.docs.map((doc) => doc.data());
+
+  console.log(transactions);
+  return transactions;
+};
+
 // Create new user with email
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;

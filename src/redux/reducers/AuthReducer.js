@@ -1,6 +1,7 @@
 import firebase, {
   provider,
-  receiveIncomeExpenseCategories
+  receiveIncomeExpenseCategories,
+  receiveTransactions
 } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
@@ -34,12 +35,18 @@ export const signInWithGoogle = () => {
         receiveIncomeExpenseCategories(user.uid)
           .then((categories) => {
             // Receive transactions if existent
-            // TODO
+            receiveTransactions(user.uid)
+              .then((transactions) => {
+                dispatch({
+                  type: SIGN_IN_WITH_GOOGLE,
+                  payload: { user, categories, transactions }
+                });
+              })
+              .catch((err) => {
+                // Catch error and reset redux store to initial empty state
+                dispatch({ type: SIGN_IN_ERR }, err);
+              });
             // Dispatch login and set user object in redux store
-            dispatch({
-              type: SIGN_IN_WITH_GOOGLE,
-              payload: { user, categories }
-            });
           })
           .catch((err) => {
             // Catch error and reset redux store to initial empty state
@@ -95,6 +102,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         user: action.payload.user,
         profile: action.payload.categories,
+        transactions: action.payload.transactions,
         loggedIn: true
       };
     case SIGN_IN_ERR:
@@ -102,7 +110,7 @@ const authReducer = (state = initialState, action) => {
       return state;
     case SIGN_OUT:
       console.log('You signed out..');
-      return { ...state, user: {}, loggedIn: false };
+      return initialState;
     case SIGN_UP:
       console.log('Welcome..');
       return state;
