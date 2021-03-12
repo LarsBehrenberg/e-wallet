@@ -13,8 +13,8 @@ import MuiTheme from './theme';
 import {
   LeftSidebar,
   // CollapsedSidebar,
-  MinimalLayout,
-  PresentationLayout
+  MinimalLayout
+  // PresentationLayout
 } from './layout-blueprints';
 
 // Example Pages
@@ -34,7 +34,7 @@ const SignUp = lazy(() => import('./pages/signup'));
 
 // Example Pages
 
-const Index = lazy(() => import('./pages/index'));
+// const Index = lazy(() => import('./pages/index'));
 
 // const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
 // const PageChat = lazy(() => import('./example-pages/PageChat'));
@@ -113,8 +113,8 @@ const Routes = () => {
       <AnimatePresence>
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
-            <Redirect exact from="/overview" to="/" />
-            <Route exact path={['/']}>
+            <Redirect exact from="/login" to="/" />
+            {/* <Route exact path={['/']}>
               <PresentationLayout>
                 <Switch location={location} key={location.pathname}>
                   <motion.div
@@ -126,8 +126,8 @@ const Routes = () => {
                     <Route exact path="/" component={Index} />
                   </motion.div>
                 </Switch>
-              </PresentationLayout>
-            </Route>
+              </PresentationLayout> 
+            </Route> */}
 
             <Route
               path={[
@@ -191,7 +191,7 @@ const Routes = () => {
 
             <Route
               path={[
-                '/login',
+                '/',
                 '/signup',
                 '/PageLoginOverlay',
                 '/PageRegisterOverlay',
@@ -208,7 +208,7 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route path="/login" component={Login} />
+                    <Route path="/" component={Login} />
                     <Route path="/signup" component={SignUp} />
                     <Route
                       path="/PageRegisterOverlay"
