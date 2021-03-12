@@ -138,10 +138,7 @@ const HeaderUserbox = ({ name, email, photoURL, signOut }) => {
                 Profile Settings
               </ListItem>
             </NavLink>
-            <ListItem
-              button
-              className="d-block text-left"
-              onClick={() => signOut()}>
+            <ListItem button className="d-block text-left" onClick={signOut}>
               Sign Out
             </ListItem>
           </List>
@@ -198,10 +195,10 @@ const HeaderUserbox = ({ name, email, photoURL, signOut }) => {
   );
 };
 
-const mapStateToProps = ({ firebase: { auth } }) => ({
-  name: auth.displayName,
-  email: auth.email,
-  photoURL: auth.photoURL
+const mapStateToProps = ({ auth: { user } }) => ({
+  name: user.displayName,
+  email: user.email,
+  photoURL: user.photoURL
 });
 
 const mapDispatchToProps = (dispatch) => ({

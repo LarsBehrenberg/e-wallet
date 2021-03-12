@@ -61,19 +61,19 @@ export const signUp = (creds) => {
   };
 };
 
-const authReducer = (state = { user: {} }, action) => {
+const authReducer = (state = { user: {}, loggedIn: false }, action) => {
   switch (action.type) {
     case SIGN_IN:
       console.log('Welcome back..');
       return state;
     case SIGN_IN_WITH_GOOGLE:
-      return { ...state, user: action.payload };
+      return { ...state, user: action.payload, loggedIn: true };
     case SIGN_IN_ERR:
       console.error('Sign in error...');
       return state;
     case SIGN_OUT:
       console.log('You signed out..');
-      return state;
+      return { ...state, user: {}, loggedIn: false };
     case SIGN_UP:
       console.log('Welcome..');
       return state;

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import PageRegisterBasic1 from '../example-components/PageRegisterBasic/PageRegisterBasic1';
 
-const SignUp = ({ uid }) => {
-  return uid ? (
+const SignUp = () => {
+  const { loggedIn } = useSelector((state) => state.auth);
+  return loggedIn ? (
     <Redirect to="/dashboard" />
   ) : (
     <>
@@ -14,6 +15,4 @@ const SignUp = ({ uid }) => {
   );
 };
 
-const mapStateToProps = ({ firebase }) => ({ uid: firebase.auth.uid });
-
-export default connect(mapStateToProps)(SignUp);
+export default SignUp;

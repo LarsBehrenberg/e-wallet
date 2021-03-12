@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader } from 'react-spinners';
 
@@ -50,6 +51,7 @@ const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
 const Routes = () => {
   const location = useLocation();
+  const { loggedIn } = useSelector((state) => state.auth);
 
   const pageVariants = {
     initial: {
@@ -134,24 +136,28 @@ const Routes = () => {
                 '/profile-settings',
                 '/import'
               ]}>
-              <LeftSidebar>
-                <Switch location={location} key={location.pathname}>
-                  <motion.div
-                    initial="initial"
-                    animate="in"
-                    exit="out"
-                    variants={pageVariants}
-                    transition={pageTransition}>
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/import" component={Import} />
-                    <Route
-                      path="/profile-settings"
-                      component={ProfileSettings}
-                    />
-                    {/* <Route path="/transactions" component={Transactions} /> */}
-                  </motion.div>
-                </Switch>
-              </LeftSidebar>
+              {!loggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <LeftSidebar>
+                  <Switch location={location} key={location.pathname}>
+                    <motion.div
+                      initial="initial"
+                      animate="in"
+                      exit="out"
+                      variants={pageVariants}
+                      transition={pageTransition}>
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/import" component={Import} />
+                      <Route
+                        path="/profile-settings"
+                        component={ProfileSettings}
+                      />
+                      {/* <Route path="/transactions" component={Transactions} /> */}
+                    </motion.div>
+                  </Switch>
+                </LeftSidebar>
+              )}
             </Route>
 
             <Route
