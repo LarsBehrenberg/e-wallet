@@ -13,7 +13,7 @@ import { RingLoader } from 'react-spinners';
 
 const { store, persistor } = createStore;
 
-function isLoading() {
+const IsLoading = () => {
   return (
     <section className="vh-100">
       <header className="container vh-100">
@@ -27,11 +27,11 @@ function isLoading() {
       </header>
     </section>
   );
-}
+};
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate loading={isLoading} persistor={persistor}>
+    <PersistGate loading={<IsLoading />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>,

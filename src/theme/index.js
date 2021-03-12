@@ -55,19 +55,19 @@ const MuiTheme = createMuiTheme({
         padding: '6px 20px',
         fontSize: 14
       },
-      outlinedSmall: {
-        padding: '6px 20px',
-        fontSize: 14
-      },
-      textSmall: {
-        padding: '6px 20px',
-        fontSize: 14
-      },
+      // outlinedSmall: {
+      //   padding: '6px 20px',
+      //   fontSize: 14
+      // },
+      // textSmall: {
+      //   padding: '6px 20px',
+      //   fontSize: 14
+      // },
 
-      sizeMedium: {
-        padding: '10px 22px',
-        fontSize: 15
-      },
+      // sizeMedium: {
+      //   padding: '10px 22px',
+      //   fontSize: 15
+      // },
       outlined: {
         padding: '10px 22px',
         fontSize: 14
@@ -81,14 +81,14 @@ const MuiTheme = createMuiTheme({
         padding: '16px 28px',
         fontSize: 16
       },
-      outlinedLarge: {
-        padding: '16px 28px',
-        fontSize: 16
-      },
-      textLarge: {
-        padding: '16px 28px',
-        fontSize: 16
-      },
+      // outlinedLarge: {
+      //   padding: '16px 28px',
+      //   fontSize: 16
+      // },
+      // textLarge: {
+      //   padding: '16px 28px',
+      //   fontSize: 16
+      // },
 
       root: {
         textTransform: 'none',
