@@ -16,7 +16,7 @@ import {
 import { connect } from 'react-redux';
 import Rating from '@material-ui/lab/Rating';
 
-import { setHeaderDrawerToggle } from '../../reducers/ThemeOptions';
+import { setHeaderDrawerToggle } from '../../redux/reducers/ThemeOptions';
 
 import avatar1 from '../../assets/images/avatars/avatar1.jpg';
 import avatar2 from '../../assets/images/avatars/avatar2.jpg';

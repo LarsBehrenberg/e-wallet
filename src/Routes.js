@@ -7,10 +7,6 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import MuiTheme from './theme';
 
-// Redux
-import { connect } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
-
 // Layout Blueprints
 
 import {
@@ -30,7 +26,7 @@ import PageError505 from './example-pages/PageError505';
 
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
-const Transactions = lazy(() => import('./pages/transactions'));
+// const Transactions = lazy(() => import('./pages/transactions'));
 const Import = lazy(() => import('./pages/import'));
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/signup'));
@@ -52,22 +48,8 @@ const PageRecoverOverlay = lazy(() =>
 );
 const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
-const Routes = ({ uid }) => {
+const Routes = () => {
   const location = useLocation();
-
-  useFirestoreConnect([
-    {
-      collection: 'users',
-      doc: uid,
-      storeAs: 'user'
-    },
-    {
-      collection: 'users',
-      doc: uid,
-      subcollections: [{ collection: 'transactions' }],
-      storeAs: 'transactions'
-    }
-  ]);
 
   const pageVariants = {
     initial: {
@@ -152,29 +134,24 @@ const Routes = ({ uid }) => {
                 '/profile-settings',
                 '/import'
               ]}>
-              {!uid ? (
-                <Redirect to="/" />
-              ) : (
-                <LeftSidebar>
-                  <Switch location={location} key={location.pathname}>
-                    <motion.div
-                      initial="initial"
-                      animate="in"
-                      exit="out"
-                      variants={pageVariants}
-                      transition={pageTransition}>
-                      <Route path="/dashboard" component={Dashboard} />
-                      <Route path="/import" component={Import} />
-                      <Route
-                        path="/profile-settings"
-                        component={ProfileSettings}
-                      />
-                      <Route path="/transactions" component={Transactions} />
-                    </motion.div>
-                  </Switch>
-                </LeftSidebar>
-              )}
-              )
+              <LeftSidebar>
+                <Switch location={location} key={location.pathname}>
+                  <motion.div
+                    initial="initial"
+                    animate="in"
+                    exit="out"
+                    variants={pageVariants}
+                    transition={pageTransition}>
+                    <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/import" component={Import} />
+                    <Route
+                      path="/profile-settings"
+                      component={ProfileSettings}
+                    />
+                    {/* <Route path="/transactions" component={Transactions} /> */}
+                  </motion.div>
+                </Switch>
+              </LeftSidebar>
             </Route>
 
             <Route
@@ -249,8 +226,4 @@ const Routes = ({ uid }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  uid: state.firebase.auth.uid
-});
-
-export default connect(mapStateToProps)(Routes);
+export default Routes;

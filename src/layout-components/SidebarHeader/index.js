@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 import {
   setSidebarToggle,
   setSidebarToggleMobile
-} from '../../reducers/ThemeOptions';
+} from '../../redux/reducers/ThemeOptions';
 
 import projectLogo from '../../assets/images/react.svg';
 

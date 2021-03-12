@@ -4,9 +4,9 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 
-import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
+import { setSidebarToggleMobile } from '../../redux/reducers/ThemeOptions';
 
-import HeaderUserbox from '../../layout-components/HeaderUserbox';
+// import HeaderUserbox from '../../layout-components/HeaderUserbox';
 import HeaderSearch from '../../layout-components/HeaderSearch';
 
 const Header = (props) => {
@@ -43,7 +43,7 @@ const Header = (props) => {
         </div>
         <div className="app-header--pane">
           {/* <HeaderDots /> */}
-          <HeaderUserbox />
+          {/* <HeaderUserbox /> */}
           {/* <HeaderDrawer /> */}
         </div>
       </div>

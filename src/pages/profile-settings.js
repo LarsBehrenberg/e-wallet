@@ -6,7 +6,7 @@ import {
   PageTitleWithoutButtons
 } from '../layout-components';
 
-import Blocks from '../components/settingBlocks';
+// import Blocks from '../components/settingBlocks';
 
 export default function ProfileSettings() {
   return (
@@ -16,9 +16,7 @@ export default function ProfileSettings() {
         titleDescription="Configure your profile information, account settings, income and expense categories and more."
       />
 
-      <ExampleWrapperSeamless>
-        <Blocks />
-      </ExampleWrapperSeamless>
+      <ExampleWrapperSeamless>{/* <Blocks /> */}</ExampleWrapperSeamless>
     </div>
   );
 }

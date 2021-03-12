@@ -1,4 +1,4 @@
-import { provider } from '../firebase/firebase.utils';
+import { provider } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_IN_WITH_GOOGLE = 'SIGN_IN_WITH_GOOGLE';

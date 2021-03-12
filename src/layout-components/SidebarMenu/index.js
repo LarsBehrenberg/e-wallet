@@ -8,7 +8,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { connect } from 'react-redux';
 
 import { NavLink } from 'react-router-dom';
-import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
+import { setSidebarToggleMobile } from '../../redux/reducers/ThemeOptions';
 
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';

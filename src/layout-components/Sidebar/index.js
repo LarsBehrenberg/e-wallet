@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 
-import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
+import { setSidebarToggleMobile } from '../../redux/reducers/ThemeOptions';
 
 import {
   SidebarHeader,

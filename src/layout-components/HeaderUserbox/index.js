@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 // Redux
 import { connect } from 'react-redux';
-import { signOut } from '../../reducers/AuthReducer';
+import { signOut } from '../../redux/reducers/AuthReducer';
 
 // Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

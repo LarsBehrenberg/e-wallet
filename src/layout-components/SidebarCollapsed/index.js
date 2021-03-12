@@ -7,7 +7,7 @@ import { Button, Tooltip } from '@material-ui/core';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { connect } from 'react-redux';
-import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
+import { setSidebarToggleMobile } from '../../redux/reducers/ThemeOptions';
 
 import { NavLink } from 'react-router-dom';
 

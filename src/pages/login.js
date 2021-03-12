@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useFirebase } from 'react-redux-firebase';
 
 // Firebase
 // import { signInWithGoogle } from '../firebase/firebase.utils';
-import { signInWithGoogle } from '../reducers/AuthReducer';
+import { signInWithGoogle } from '../redux/reducers/AuthReducer';
 
 // Components
 import {
@@ -29,13 +28,14 @@ const Login = ({ uid }) => {
     setChecked1(event.target.checked);
   };
 
-  const firebase = useFirebase();
+  // const firebase = useFirebase();
 
   function loginWithGoogle() {
-    return firebase.login({
-      provider: 'google',
-      type: 'popup'
-    });
+    console.log('clicked');
+    // return firebase.login({
+    //   provider: 'google',
+    //   type: 'popup'
+    // });
   }
 
   if (uid) return <Redirect to="/dashboard" />;
