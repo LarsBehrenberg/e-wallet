@@ -1,4 +1,7 @@
-import firebase, { provider } from '../../firebase/firebase.utils';
+import firebase, {
+  provider,
+  createDefaultIncomeExpenseCategories
+} from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_IN_WITH_GOOGLE = 'SIGN_IN_WITH_GOOGLE';
@@ -27,10 +30,13 @@ export const signInWithGoogle = () => {
       .auth()
       .signInWithPopup(provider)
       .then(({ user }) => {
-        console.log(user);
+        // Create default income and expense categories if not already existent in user profile
+        createDefaultIncomeExpenseCategories(user.uid);
+        // Dispatch login and set user object in redux store
         dispatch({ type: SIGN_IN_WITH_GOOGLE, payload: user });
       })
       .catch((err) => {
+        // Catch error and reset redux store to initial empty state
         dispatch({ type: SIGN_IN_ERR }, err);
       });
   };
@@ -79,7 +85,7 @@ const authReducer = (state = { user: {}, loggedIn: false }, action) => {
       return state;
     case SIGN_UP_ERR:
       console.error('Sign up error...');
-      return state;
+      return { user: {}, loggedIn: false };
     default:
       break;
   }

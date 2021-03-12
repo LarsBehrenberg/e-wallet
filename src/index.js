@@ -9,35 +9,30 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import createStore from './redux/configureStore';
 
-// import { RingLoader } from 'react-spinners';
+import { RingLoader } from 'react-spinners';
 
 const { store, persistor } = createStore;
 
-function AuthIsLoaded({ children }) {
-  // const auth = useSelector((state) => state.firebase.auth);
-  // if (!isLoaded(auth))
-  //   return (
-  //     <section className="vh-100">
-  //       <header className="container vh-100">
-  //         <div className="d-flex align-items-center justify-content-center vh-100">
-  //           <div
-  //             className="d-flex align-items-center justify-content-center"
-  //             style={{ width: '150px', height: '80px' }}>
-  //             <RingLoader color={'var(--primary)'} loading={true} />
-  //           </div>
-  //         </div>
-  //       </header>
-  //     </section>
-  //   );
-  return children;
+function isLoading() {
+  return (
+    <section className="vh-100">
+      <header className="container vh-100">
+        <div className="d-flex align-items-center justify-content-center vh-100">
+          <div
+            className="d-flex align-items-center justify-content-center"
+            style={{ width: '150px', height: '80px' }}>
+            <RingLoader color={'var(--primary)'} loading={true} />
+          </div>
+        </div>
+      </header>
+    </section>
+  );
 }
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate loading={'loading'} persistor={persistor}>
-      <AuthIsLoaded>
-        <App />
-      </AuthIsLoaded>
+    <PersistGate loading={isLoading} persistor={persistor}>
+      <App />
     </PersistGate>
   </Provider>,
   document.getElementById('root')

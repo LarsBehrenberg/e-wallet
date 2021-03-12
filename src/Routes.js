@@ -12,7 +12,7 @@ import MuiTheme from './theme';
 
 import {
   LeftSidebar,
-  CollapsedSidebar,
+  // CollapsedSidebar,
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
@@ -36,10 +36,10 @@ const SignUp = lazy(() => import('./pages/signup'));
 
 const Index = lazy(() => import('./pages/index'));
 
-const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
-const PageChat = lazy(() => import('./example-pages/PageChat'));
-const PageProjects = lazy(() => import('./example-pages/PageProjects'));
-const PageFileManager = lazy(() => import('./example-pages/PageFileManager'));
+// const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
+// const PageChat = lazy(() => import('./example-pages/PageChat'));
+// const PageProjects = lazy(() => import('./example-pages/PageProjects'));
+// const PageFileManager = lazy(() => import('./example-pages/PageFileManager'));
 // const PageLoginOverlay = lazy(() => import('./example-pages/PageLoginOverlay'));
 const PageRegisterOverlay = lazy(() =>
   import('./example-pages/PageRegisterOverlay')
@@ -47,7 +47,7 @@ const PageRegisterOverlay = lazy(() =>
 const PageRecoverOverlay = lazy(() =>
   import('./example-pages/PageRecoverOverlay')
 );
-const PageProfile = lazy(() => import('./example-pages/PageProfile'));
+// const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
 const Routes = () => {
   const location = useLocation();
@@ -160,7 +160,7 @@ const Routes = () => {
               )}
             </Route>
 
-            <Route
+            {/* <Route
               path={[
                 '/PageCalendar',
                 '/PageChat',
@@ -187,7 +187,7 @@ const Routes = () => {
                   </motion.div>
                 </Switch>
               </CollapsedSidebar>
-            </Route>
+            </Route> */}
 
             <Route
               path={[
