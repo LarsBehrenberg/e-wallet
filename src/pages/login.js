@@ -21,24 +21,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-const Login = ({ uid }) => {
+const Login = ({ uid, signInWithGoogle }) => {
   const [checked1, setChecked1] = useState(true);
 
   const handleChange1 = (event) => {
     setChecked1(event.target.checked);
   };
 
-  // const firebase = useFirebase();
-
-  function loginWithGoogle() {
-    console.log('clicked');
-    // return firebase.login({
-    //   provider: 'google',
-    //   type: 'popup'
-    // });
-  }
-
   if (uid) return <Redirect to="/dashboard" />;
+
   return (
     <>
       <div className="app-wrapper bg-white min-vh-100">
@@ -58,7 +49,7 @@ const Login = ({ uid }) => {
                       <Button
                         className="m-2 btn-pill px-4 font-weight-bold btn-google"
                         size="small"
-                        onClick={loginWithGoogle}>
+                        onClick={signInWithGoogle}>
                         <span className="btn-wrapper--icon">
                           <FontAwesomeIcon icon={['fab', 'google']} />
                         </span>
@@ -160,9 +151,9 @@ const Login = ({ uid }) => {
 };
 
 const mapStateToProps = (state) => {
-  const uid = state.firebase.auth.uid;
+  const uid = state.auth.user.uid;
   return {
-    uid: uid
+    uid
   };
 };
 const mapDispatchToProps = (dispatch) => ({

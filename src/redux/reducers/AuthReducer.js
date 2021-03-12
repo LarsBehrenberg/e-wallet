@@ -1,4 +1,4 @@
-import { provider } from '../../firebase/firebase.utils';
+import firebase, { provider } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_IN_WITH_GOOGLE = 'SIGN_IN_WITH_GOOGLE';
@@ -8,9 +8,7 @@ export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_ERR = 'SIGN_UP_ERR';
 
 export const signInWithEmailAndPassword = (creds) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
+  return (dispatch) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(creds.email, creds.password)
@@ -24,14 +22,13 @@ export const signInWithEmailAndPassword = (creds) => {
 };
 
 export const signInWithGoogle = () => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
+  return (dispatch) => {
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then(() => {
-        dispatch({ type: SIGN_IN_WITH_GOOGLE });
+      .then(({ user }) => {
+        console.log(user);
+        dispatch({ type: SIGN_IN_WITH_GOOGLE, payload: user });
       })
       .catch((err) => {
         dispatch({ type: SIGN_IN_ERR }, err);
@@ -40,9 +37,7 @@ export const signInWithGoogle = () => {
 };
 
 export const signOut = () => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
+  return (dispatch) => {
     firebase
       .auth()
       .signOut()
@@ -53,9 +48,7 @@ export const signOut = () => {
 };
 
 export const signUp = (creds) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
+  return (dispatch) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(creds.email, creds.password)
@@ -68,14 +61,13 @@ export const signUp = (creds) => {
   };
 };
 
-const authReducer = (state = {}, action) => {
+const authReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case SIGN_IN:
       console.log('Welcome back..');
       return state;
     case SIGN_IN_WITH_GOOGLE:
-      console.log('Google');
-      return state;
+      return { ...state, user: action.payload };
     case SIGN_IN_ERR:
       console.error('Sign in error...');
       return state;
@@ -89,8 +81,10 @@ const authReducer = (state = {}, action) => {
       console.error('Sign up error...');
       return state;
     default:
-      return state;
+      break;
   }
+
+  return state;
 };
 
 export default authReducer;

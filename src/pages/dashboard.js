@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Redux & Firebase
-
 export default function Dashboard() {
   return (
     <>

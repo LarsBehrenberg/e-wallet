@@ -7,11 +7,11 @@ import * as serviceWorker from './serviceWorker';
 // Redux
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import configureStore from './redux/configureStore';
+import createStore from './redux/configureStore';
 
 // import { RingLoader } from 'react-spinners';
 
-const { store, persistor } = configureStore;
+const { store, persistor } = createStore;
 
 function AuthIsLoaded({ children }) {
   // const auth = useSelector((state) => state.firebase.auth);
