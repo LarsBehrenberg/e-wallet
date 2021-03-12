@@ -23,16 +23,21 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;
 
-// Create default income and expense categories if not existent in user profile
-export const createDefaultIncomeExpenseCategories = async (uid) => {
+// Get income and expense categories and create default values if not existent in user profile
+export const receiveIncomeExpenseCategories = async (uid) => {
   if (!uid) return;
 
   const userRef = firestore.doc(`users/${uid}`);
 
-  await userRef.get().then((doc) => {
+  const categories = await userRef.get().then((doc) => {
+    const categories = {
+      incomeCategories: [],
+      expenseCategories: []
+    };
     if (!doc.exists) {
       console.log('No such document!');
     } else {
+      // Check for expense Categories
       if (doc.get('expenseCategories') == null) {
         userRef.update({
           expenseCategories: [
@@ -47,6 +52,8 @@ export const createDefaultIncomeExpenseCategories = async (uid) => {
             'Other'
           ]
         });
+      } else {
+        categories.expenseCategories = doc.get('expenseCategories');
       }
       if (doc.get('incomeCategories') == null) {
         userRef.update({
@@ -58,9 +65,13 @@ export const createDefaultIncomeExpenseCategories = async (uid) => {
             'Other'
           ]
         });
+      } else {
+        categories.incomeCategories = doc.get('incomeCategories');
       }
     }
+    return categories;
   });
+  return categories;
 };
 
 // Create new user with email

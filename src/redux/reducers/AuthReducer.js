@@ -1,6 +1,6 @@
 import firebase, {
   provider,
-  createDefaultIncomeExpenseCategories
+  receiveIncomeExpenseCategories
 } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
@@ -31,9 +31,20 @@ export const signInWithGoogle = () => {
       .signInWithPopup(provider)
       .then(({ user }) => {
         // Create default income and expense categories if not already existent in user profile
-        createDefaultIncomeExpenseCategories(user.uid);
-        // Dispatch login and set user object in redux store
-        dispatch({ type: SIGN_IN_WITH_GOOGLE, payload: user });
+        receiveIncomeExpenseCategories(user.uid)
+          .then((categories) => {
+            // Receive transactions if existent
+            // TODO
+            // Dispatch login and set user object in redux store
+            dispatch({
+              type: SIGN_IN_WITH_GOOGLE,
+              payload: { user, categories }
+            });
+          })
+          .catch((err) => {
+            // Catch error and reset redux store to initial empty state
+            dispatch({ type: SIGN_IN_ERR }, err);
+          });
       })
       .catch((err) => {
         // Catch error and reset redux store to initial empty state
@@ -67,13 +78,25 @@ export const signUp = (creds) => {
   };
 };
 
-const authReducer = (state = { user: {}, loggedIn: false }, action) => {
+const initialState = {
+  user: {},
+  transactions: {},
+  profile: {},
+  loggedIn: false
+};
+
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_IN:
       console.log('Welcome back..');
       return state;
     case SIGN_IN_WITH_GOOGLE:
-      return { ...state, user: action.payload, loggedIn: true };
+      return {
+        ...state,
+        user: action.payload.user,
+        profile: action.payload.categories,
+        loggedIn: true
+      };
     case SIGN_IN_ERR:
       console.error('Sign in error...');
       return state;
@@ -85,7 +108,7 @@ const authReducer = (state = { user: {}, loggedIn: false }, action) => {
       return state;
     case SIGN_UP_ERR:
       console.error('Sign up error...');
-      return { user: {}, loggedIn: false };
+      return initialState;
     default:
       break;
   }
