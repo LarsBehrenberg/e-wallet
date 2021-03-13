@@ -26,7 +26,7 @@ const Sidebar = (props) => {
   return (
     <>
       <div
-        className={clsx('app-sidebar', sidebarStyle, {
+        className={clsx('app-sidebar', sidebarStyle, 'bg-royal', {
           'app-sidebar--shadow': sidebarShadow
         })}>
         <SidebarHeader />

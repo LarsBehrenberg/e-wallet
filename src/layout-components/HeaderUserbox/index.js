@@ -72,7 +72,7 @@ const HeaderUserbox = ({ name, email, photoURL, signOut }) => {
         className="mr-2 btn-transition-none text-left mr-2 p-0 bg-transparent d-flex align-items-center"
         disableRipple>
         <div className="d-block p-0 avatar-icon-wrapper">
-          {profileImage ? (
+          {profileImage && (
             <StyledBadge
               overlap="circle"
               anchorOrigin={{
@@ -86,7 +86,7 @@ const HeaderUserbox = ({ name, email, photoURL, signOut }) => {
                 <img src={profileImage} alt="..." />
               </div>
             </StyledBadge>
-          ) : null}
+          )}
         </div>
 
         <div className="d-none d-xl-block pl-2">

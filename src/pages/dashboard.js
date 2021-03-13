@@ -1,14 +1,15 @@
 import React from 'react';
 
+import DashboardStatistics from '../components/DashboardStatistics';
+import DashboardProfile from '../components/DashboardProfile';
+
 export default function Dashboard() {
   return (
     <>
-      {/* <DashboardCommerce1 />
-      <DashboardCommerce2 />
-      <DashboardCommerce3 />
-      <DashboardCommerce4 />
-      <DashboardCommerce5 />
-      <DashboardCommerce6 /> */}
+      <DashboardProfile />
+      <div className="m-3 m-md-5">
+        <DashboardStatistics />
+      </div>
     </>
   );
 }
