@@ -19,17 +19,17 @@ export default function LivePreviewExample() {
     <>
       <div className="app-inner-content-layout">
         <div className="app-inner-content-layout--main p-0">
-          <div className="hero-wrapper mx-5 rounded-bottom shadow-xxl bg-composed-wrapper bg-royal">
+          <div className="hero-wrapper mx-3 mx-md-5 rounded-bottom shadow-xxl bg-composed-wrapper bg-royal">
             <div className="flex-grow-1 w-100 d-flex align-items-center">
               <div className="bg-composed-wrapper--image rounded-bottom opacity-3" />
               <div className="bg-composed-wrapper--bg rounded-bottom opacity-4" />
               <div className="bg-composed-wrapper--content px-3 py-5">
                 <Container>
                   <div className="d-block d-md-flex align-items-center">
-                    <div className=" rounded-circle shadow-sm-dark mr-md-3">
+                    <div className=" rounded-circle  mr-md-3">
                       <div>
                         <div className="-inner-wrapper rounded-circle">
-                          <div className="avatar-icon-wrapper d-80 rounded-circle m-2 bg-grey">
+                          <div className="avatar-icon-wrapper d-80 shadow-sm-dark rounded-circle m-2 bg-grey">
                             <div className="avatar-icon rounded-circle w-100 h-100 mr-md-3">
                               <img src={profileImage} alt="..." />
                             </div>

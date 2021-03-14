@@ -1,70 +1,108 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Card, CardContent } from '@material-ui/core';
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
+import {
+  totalIncomeCurrentMonth as tICM,
+  relationIncomeLastCurrentMonth,
+  totalExpenseCurrentMonth
+} from '../utils/transactions-calculations';
+
 export default function LivePreviewExample() {
+  const { transactions } = useSelector((state) => state.auth);
+
+  const totalIncomeCurrentMonth = tICM(transactions);
+  const incomeComparison = relationIncomeLastCurrentMonth(transactions);
+  const totalExpense = totalExpenseCurrentMonth(transactions);
+
   return (
     <>
-      <div className="mb-spacing-6">
+      <div className="mb-spacing-6 mt-5 mx-md-5 mx-3">
         <Grid container spacing={6}>
-          <Grid item lg={6} xl={4}>
+          <Grid item sm={4}>
             <Card className="card-box bg-premium-dark border-0 text-light">
               <CardContent>
                 <div className="align-box-row align-items-start">
                   <div className="font-weight-bold">
                     <small className="text-white-50 d-block mb-1 text-uppercase">
-                      Income
+                      Current Income
                     </small>
-                    <span className="font-size-xxl mt-1">586,356</span>
+                    <span className="font-size-xxl mt-1">
+                      ¥{totalIncomeCurrentMonth.toLocaleString()}
+                    </span>
                   </div>
                   <div className="ml-auto">
                     <div className="bg-white text-center text-success font-size-xl d-50 rounded-circle btn-icon">
-                      <FontAwesomeIcon icon={['far', 'building']} />
+                      <FontAwesomeIcon icon={['fas', 'dollar-sign']} />
                     </div>
                   </div>
                 </div>
                 <div className="mt-3">
-                  <FontAwesomeIcon
-                    icon={['fas', 'arrow-up']}
-                    className="text-success"
-                  />
-                  <span className="text-success px-1">15.4%</span>
-                  <span className="text-white-50">increase this month</span>
+                  {incomeComparison ? (
+                    Math.sign(parseInt(incomeComparison)) >= 0 ? (
+                      <>
+                        <FontAwesomeIcon
+                          icon={['fas', 'arrow-up']}
+                          className="text-success"
+                        />
+                        <span className="text-success px-1">
+                          {incomeComparison}%
+                        </span>
+                        <span className="text-white-50">
+                          increase this month
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon
+                          icon={['fas', 'arrow-down']}
+                          className="text-danger"
+                        />
+                        <span className="text-danger px-1">
+                          {incomeComparison}%
+                        </span>
+                        <span className="text-white-50">
+                          decrease this month
+                        </span>
+                      </>
+                    )
+                  ) : null}
                 </div>
               </CardContent>
             </Card>
           </Grid>
-          <Grid item lg={6} xl={4}>
+          <Grid item sm={4}>
             <Card className="card-box bg-night-sky text-light">
               <CardContent>
                 <div className="align-box-row align-items-start">
                   <div className="font-weight-bold">
                     <small className="text-white-50 d-block mb-1 text-uppercase">
-                      Expenses
+                      Current Expenses
                     </small>
-                    <span className="font-size-xxl mt-1">23,274</span>
+                    <span className="font-size-xxl mt-1">¥123,122</span>
                   </div>
                   <div className="ml-auto">
                     <div className="bg-white text-center text-primary font-size-xl d-50 rounded-circle btn-icon">
-                      <FontAwesomeIcon icon={['far', 'dot-circle']} />
+                      <FontAwesomeIcon icon={['fas', 'funnel-dollar']} />
                     </div>
                   </div>
                 </div>
                 <div className="mt-3">
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     icon={['fas', 'arrow-up']}
                     className="text-success"
                   />
                   <span className="text-success px-1">12.65%</span>
-                  <span className="text-white-50">same as before</span>
+                  <span className="text-white-50">same as before</span> */}
                 </div>
               </CardContent>
             </Card>
           </Grid>
-          <Grid item lg={12} xl={4}>
+          <Grid item sm={4}>
             <Card className="card-box bg-midnight-bloom text-white">
               <CardContent>
                 <div className="align-box-row align-items-start">
@@ -72,7 +110,9 @@ export default function LivePreviewExample() {
                     <small className="text-white-50 d-block mb-1 text-uppercase">
                       This Month's Budget
                     </small>
-                    <span className="font-size-xxl mt-1">345</span>
+                    <span className="font-size-xxl mt-1">
+                      {totalExpense} / ¥90,000
+                    </span>
                   </div>
                   <div className="ml-auto">
                     <div className="text-center text-danger font-size-xl d-50 rounded-circle btn-icon">
@@ -107,12 +147,12 @@ export default function LivePreviewExample() {
                   </div>
                 </div>
                 <div className="mt-3">
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     icon={['fas', 'arrow-up']}
                     className="text-warning"
                   />
                   <span className="text-warning px-1">4.2%</span>
-                  <span className="text-white-50">compared to last month</span>
+                  <span className="text-white-50">compared to last month</span> */}
                 </div>
               </CardContent>
             </Card>
