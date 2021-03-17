@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // Firebase
@@ -131,12 +131,9 @@ const Login = ({ uid, signInWithGoogle }) => {
                       </div>
                       <div className="text-center text-black-50 mt-3">
                         Don't have an account?{' '}
-                        <a
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
-                          className="text-first">
+                        <Link to="/signup" className="text-first">
                           Sign up
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </Grid>

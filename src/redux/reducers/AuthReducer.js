@@ -11,20 +11,6 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_ERR = 'SIGN_UP_ERR';
 
-export const signInWithEmailAndPassword = (creds) => {
-  return (dispatch) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(creds.email, creds.password)
-      .then(() => {
-        dispatch({ type: SIGN_IN });
-      })
-      .catch((err) => {
-        dispatch({ type: SIGN_IN_ERR }, err);
-      });
-  };
-};
-
 export const signInWithGoogle = () => {
   return (dispatch) => {
     firebase
@@ -60,6 +46,21 @@ export const signInWithGoogle = () => {
   };
 };
 
+export const signInWithEmailAndPassword = (creds) => {
+  return (dispatch) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(creds.email, creds.password)
+      .then((data) => {
+        console.log(data);
+        dispatch({ type: SIGN_IN });
+      })
+      .catch((err) => {
+        dispatch({ type: SIGN_IN_ERR }, err);
+      });
+  };
+};
+
 export const signOut = () => {
   return (dispatch) => {
     firebase
@@ -76,7 +77,8 @@ export const signUp = (creds) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(creds.email, creds.password)
-      .then(() => {
+      .then((data) => {
+        console.log(data);
         dispatch({ type: SIGN_UP });
       })
       .catch((err) => {

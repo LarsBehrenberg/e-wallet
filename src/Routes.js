@@ -208,7 +208,7 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route path="/" component={Login} />
+                    <Route exact path="/" component={Login} />
                     <Route path="/signup" component={SignUp} />
                     <Route
                       path="/PageRegisterOverlay"
