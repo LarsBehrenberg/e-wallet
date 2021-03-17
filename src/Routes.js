@@ -11,43 +11,22 @@ import MuiTheme from './theme';
 // Layout Blueprints
 
 import {
-  LeftSidebar,
+  LeftSidebar
   // CollapsedSidebar,
-  MinimalLayout
+  // MinimalLayout
   // PresentationLayout
 } from './layout-blueprints';
 
-// Example Pages
-
-import PageError404 from './example-pages/PageError404';
-import PageError500 from './example-pages/PageError500';
-import PageError505 from './example-pages/PageError505';
-
 // Real Pages
-
+const Index = lazy(() => import('./pages/index'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
 // const Transactions = lazy(() => import('./pages/transactions'));
 const Import = lazy(() => import('./pages/import'));
-const Login = lazy(() => import('./pages/login'));
-const SignUp = lazy(() => import('./pages/signup'));
+// const Login = lazy(() => import('./pages/login'));
+// const SignUp = lazy(() => import('./pages/signup'));
 
 // Example Pages
-
-// const Index = lazy(() => import('./pages/index'));
-
-// const PageCalendar = lazy(() => import('./example-pages/PageCalendar'));
-// const PageChat = lazy(() => import('./example-pages/PageChat'));
-// const PageProjects = lazy(() => import('./example-pages/PageProjects'));
-// const PageFileManager = lazy(() => import('./example-pages/PageFileManager'));
-// const PageLoginOverlay = lazy(() => import('./example-pages/PageLoginOverlay'));
-const PageRegisterOverlay = lazy(() =>
-  import('./example-pages/PageRegisterOverlay')
-);
-const PageRecoverOverlay = lazy(() =>
-  import('./example-pages/PageRecoverOverlay')
-);
-// const PageProfile = lazy(() => import('./example-pages/PageProfile'));
 
 const Routes = () => {
   const location = useLocation();
@@ -113,7 +92,7 @@ const Routes = () => {
       <AnimatePresence>
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
-            <Redirect exact from="/login" to="/" />
+            <Route exact path="/" component={Index} />
             {/* <Route exact path={['/']}>
               <PresentationLayout>
                 <Switch location={location} key={location.pathname}>
@@ -189,7 +168,7 @@ const Routes = () => {
               </CollapsedSidebar>
             </Route> */}
 
-            <Route
+            {/* <Route
               path={[
                 '/',
                 '/signup',
@@ -224,7 +203,7 @@ const Routes = () => {
                   </motion.div>
                 </Switch>
               </MinimalLayout>
-            </Route>
+            </Route> */}
           </Switch>
         </Suspense>
       </AnimatePresence>
