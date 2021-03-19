@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 // Components
-import { Grid, Container } from '@material-ui/core';
+import { Grid, Container, Button } from '@material-ui/core';
 
 import Footer from '../components/LandingPage/Footer';
 import Navbar from '../components/LandingPage/Navbar';
@@ -16,6 +16,7 @@ import hero2 from '../assets/images/hero-bg/hero-2.jpg';
 import illustration1 from '../assets/images/illustrations/pack2/credit_card.svg';
 
 // Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import NotificationsActiveTwoToneIcon from '@material-ui/icons/NotificationsActiveTwoTone';
 // import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
 // import LocalLibraryTwoToneIcon from '@material-ui/icons/LocalLibraryTwoTone';
@@ -49,8 +50,19 @@ const LandingPage = ({ uid, signInWithGoogle }) => {
                         where you money went and get personalized statistics on
                         a weekly, monthly and yearly basis.
                       </p>
-                      {/* <div className="pt-3">
+                      <div className="pt-1">
                         <Button
+                          className="btn-pill px-4 py-2 font-weight-bold btn-google d-md-none"
+                          size="small"
+                          onClick={signInWithGoogle}>
+                          <span className="btn-wrapper--icon">
+                            <FontAwesomeIcon icon={['fab', 'google']} />
+                          </span>
+                          <span className="btn-wrapper--label">
+                            Login with Google
+                          </span>
+                        </Button>
+                        {/* <Button
                           href="#/"
                           onClick={(e) => e.preventDefault()}
                           size="large"
@@ -67,8 +79,8 @@ const LandingPage = ({ uid, signInWithGoogle }) => {
                           className="bg-white-50 text-second btn-pill ml-3"
                           disableRipple>
                           <span>Learn more</span>
-                        </Button>
-                      </div> */}
+                        </Button> */}
+                      </div>
                     </div>
                   </Grid>
                   <Grid item lg={6} className="d-flex align-items-center">

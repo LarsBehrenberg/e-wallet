@@ -30,7 +30,7 @@ const Navbar = ({ signInWithGoogle }) => {
             </a>
           </div>
 
-          <div className="header-nav-actions flex-grow-0 flex-lg-grow-1">
+          <div className="header-nav-actions d-none d-md-flex">
             <Button
               className="m-2 btn-pill px-4 py-2 font-weight-bold btn-google"
               size="small"
