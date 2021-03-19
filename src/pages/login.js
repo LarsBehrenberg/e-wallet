@@ -153,6 +153,7 @@ const mapStateToProps = (state) => {
     uid
   };
 };
+
 const mapDispatchToProps = (dispatch) => ({
   signInWithGoogle: () => dispatch(signInWithGoogle())
 });

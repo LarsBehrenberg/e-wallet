@@ -18,7 +18,7 @@ import {
 } from './layout-blueprints';
 
 // Real Pages
-const Index = lazy(() => import('./pages/index'));
+const LandingPage = lazy(() => import('./pages/landing-page'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
 // const Transactions = lazy(() => import('./pages/transactions'));
@@ -92,7 +92,7 @@ const Routes = () => {
       <AnimatePresence>
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
-            <Route exact path="/" component={Index} />
+            <Route exact path="/" component={LandingPage} />
             {/* <Route exact path={['/']}>
               <PresentationLayout>
                 <Switch location={location} key={location.pathname}>

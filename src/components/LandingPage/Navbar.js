@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { Container, Button } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import projectLogo from '../../assets/images/react.svg';
 
-const Navbar = () => {
+const Navbar = ({ signInWithGoogle }) => {
   return (
     <>
       <Container>
@@ -31,10 +32,13 @@ const Navbar = () => {
 
           <div className="header-nav-actions flex-grow-0 flex-lg-grow-1">
             <Button
-              href="#/"
-              onClick={(e) => e.preventDefault()}
-              className="text-uppercase font-weight-bold text-nowrap font-size-xs shadow-sm-dark btn-success">
-              Sign In With Google
+              className="m-2 btn-pill px-4 py-2 font-weight-bold btn-google"
+              size="small"
+              onClick={signInWithGoogle}>
+              <span className="btn-wrapper--icon">
+                <FontAwesomeIcon icon={['fab', 'google']} />
+              </span>
+              <span className="btn-wrapper--label">Login with Google</span>
             </Button>
           </div>
         </div>
