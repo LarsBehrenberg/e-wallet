@@ -143,7 +143,7 @@ export default function reducer(
     sidebarFixed: true,
     sidebarFooter: true,
     sidebarShadow: false,
-    sidebarStyle: 'app-sidebar--light',
+    sidebarStyle: 'app-sidebar--dark',
     sidebarUserbox: true,
     sidebarToggleMobile: false,
     sidebarToggle: false,
