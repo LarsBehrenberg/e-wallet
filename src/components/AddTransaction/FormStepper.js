@@ -4,6 +4,11 @@ import { addTransactionAction } from '../../redux/reducers/AuthReducer';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+// Formating functions
+import NumberFormat from 'react-number-format';
+import { getCurrencySymbol } from '../../utils/getCurrencySymbol';
+
+// Material ui
 import {
   Grid,
   Container,
@@ -13,13 +18,20 @@ import {
   Chip
 } from '@material-ui/core';
 
-// Formating functions
-import NumberFormat from 'react-number-format';
-import { getCurrencySymbol } from '../../utils/getCurrencySymbol';
+// Mui Date
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 
+// Mui Stepper
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+
+// Icons
 import Check from '@material-ui/icons/Check';
 import StepConnector from '@material-ui/core/StepConnector';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -50,6 +62,18 @@ function NumberFormatCustom(props) {
 const Step1 = ({ handleChange, values, nextModal }) => {
   const { currencies } = useSelector((state) => state.auth.profile);
 
+  const handleDateChange = (date) => {
+    handleChange({
+      target: {
+        name: 'date',
+        value: date
+      }
+    });
+  };
+
+  const buttonDisabled =
+    typeof values.amount !== 'number' || isNaN(values.amount);
+
   const handleSubmit = (name, value) => {
     handleChange({
       target: {
@@ -70,6 +94,25 @@ const Step1 = ({ handleChange, values, nextModal }) => {
           Small section summary description can be added here!
         </p>
         <Grid container spacing={1} justify="center">
+          <Grid item xs={10} className="d-flex justify-content-center my-2">
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                style={{ margin: '0 auto' }}
+                disableToolbar
+                variant="inline"
+                format="yyyy/MM/dd"
+                margin="normal"
+                id="date"
+                label="Date"
+                name="date"
+                value={values.date}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date'
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
           <Grid item xs={5}>
             <TextField
               label="Amount"
@@ -110,12 +153,12 @@ const Step1 = ({ handleChange, values, nextModal }) => {
                 value="Income"
                 name="type"
                 onClick={() => handleSubmit('type', 'Income')}
-                disabled={typeof values.amount !== 'number'}>
+                disabled={buttonDisabled}>
                 Income
               </Button>
               <Button
                 className="btn-primary font-weight-bold px-5"
-                disabled={typeof values.amount !== 'number'}
+                disabled={buttonDisabled}
                 onClick={() => handleSubmit('type', 'Expense')}
                 value="Expense"
                 name="type">
@@ -186,23 +229,17 @@ const Step2 = ({ handleChange, values, nextModal }) => {
     </Container>
   );
 };
-const Step3 = ({ handleChange, nextModal }) => {
+const Step3 = ({ handleChange }) => {
   const { wallets } = useSelector((state) => state.auth.profile);
 
-  const handleSubmit = (name, value) => {
-    Promise.resolve()
-      .then(() => {
-        handleChange({
-          target: {
-            name,
-            value
-          }
-        });
-      })
-      .then(() => {
-        nextModal();
-      });
-  };
+  const handleSubmit = (name, value) =>
+    handleChange({
+      target: {
+        name,
+        value
+      }
+    });
+
   return (
     <Container>
       <div className="p-4">
@@ -283,7 +320,7 @@ function getStepContent(step, handleChange, values, handleNext) {
         />
       );
     case 2:
-      return <Step3 handleChange={handleChange} nextModal={handleNext} />;
+      return <Step3 handleChange={handleChange} />;
     default:
       return <Step1 />;
   }
@@ -305,24 +342,37 @@ export default function LivePreviewExample({ toggleDialog }) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleSuccess = () => {
-    Promise.resolve()
-      .then(() => dispatch(addTransactionAction(uid, values)))
-      .then(() => toggleDialog(false));
-  };
-
-  // Handle transaction information state
-  const [values, setValues] = useState({
+  // Transaction info initial state
+  const initialState = {
     amount: null,
     currency: currencies[0],
     type: '',
     description: '',
     category: '',
-    wallet: ''
-  });
+    wallet: '',
+    date: new Date(new Date().toJSON().slice(0, 10).replace(/-/g, '/'))
+  };
+
+  // Handle transaction information state
+  const [values, setValues] = useState(initialState);
 
   const handleChange = (event) =>
     setValues({ ...values, [event.target.name]: event.target.value });
+
+  const handleSuccess = () => {
+    // Make asynchrous setState calls synchronous with promise
+    Promise.resolve()
+      .then(() => dispatch(addTransactionAction(uid, values))) // Dispatch the redux action
+      .then(() => setValues(initialState)) // Reset values before useEffect runs again when closing the modal window
+      .then(() => toggleDialog(false)); // Closing the window
+  };
+
+  // Trigger addTransaction Firestore when wallet value is valid
+  React.useEffect(() => {
+    if (values.wallet) {
+      handleSuccess();
+    }
+  });
 
   return (
     <div>
@@ -339,14 +389,11 @@ export default function LivePreviewExample({ toggleDialog }) {
           ))}
         </Stepper>
       </div>
-      {activeStep === steps.length ? (
-        handleSuccess()
-      ) : (
+      <div>
         <div>
-          <div>
-            {getStepContent(activeStep, handleChange, values, handleNext)}
-          </div>
-          {/* <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
+          {getStepContent(activeStep, handleChange, values, handleNext)}
+        </div>
+        {/* <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
             <Button
               disabled={activeStep === 0}
               className="btn-primary font-weight-bold"
@@ -359,8 +406,7 @@ export default function LivePreviewExample({ toggleDialog }) {
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </div> */}
-        </div>
-      )}
+      </div>
     </div>
   );
 }

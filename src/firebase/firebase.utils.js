@@ -131,7 +131,7 @@ export const addTransaction = async (uid, transaction) => {
   collectionRef
     .add({
       ...transaction,
-      date: currentDate
+      createdAt: currentDate
     })
     .then((docRef) => {
       docRef.update({
