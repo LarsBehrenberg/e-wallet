@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTransactionAction } from '../../redux/reducers/AuthReducer';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
@@ -102,7 +103,7 @@ const Step1 = ({ handleChange, values, nextModal }) => {
               ))}
             </TextField>
           </Grid>
-          <Grid item>
+          <Grid item xs={10}>
             <div className="rounded mt-4 p-4 d-flex align-items-center justify-content-around bg-secondary">
               <Button
                 className="btn-primary font-weight-bold px-5"
@@ -185,17 +186,22 @@ const Step2 = ({ handleChange, values, nextModal }) => {
     </Container>
   );
 };
-const Step3 = ({ handleChange, handleSuccess }) => {
+const Step3 = ({ handleChange, nextModal }) => {
   const { wallets } = useSelector((state) => state.auth.profile);
 
   const handleSubmit = (name, value) => {
-    handleChange({
-      target: {
-        name,
-        value
-      }
-    });
-    handleSuccess();
+    Promise.resolve()
+      .then(() => {
+        handleChange({
+          target: {
+            name,
+            value
+          }
+        });
+      })
+      .then(() => {
+        nextModal();
+      });
   };
   return (
     <Container>
@@ -258,7 +264,7 @@ StepIcon.propTypes = {
   icon: PropTypes.node
 };
 
-function getStepContent(step, handleChange, values, handleNext, handleSuccess) {
+function getStepContent(step, handleChange, values, handleNext) {
   switch (step) {
     case 0:
       return (
@@ -277,9 +283,7 @@ function getStepContent(step, handleChange, values, handleNext, handleSuccess) {
         />
       );
     case 2:
-      return (
-        <Step3 handleChange={handleChange} handleSuccess={handleSuccess} />
-      );
+      return <Step3 handleChange={handleChange} nextModal={handleNext} />;
     default:
       return <Step1 />;
   }
@@ -287,7 +291,11 @@ function getStepContent(step, handleChange, values, handleNext, handleSuccess) {
 
 export default function LivePreviewExample({ toggleDialog }) {
   // Redux
-  const { currencies } = useSelector((state) => state.auth.profile);
+  const {
+    profile: { currencies },
+    user: { uid }
+  } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   // Handle the stepper
   const [activeStep, setActiveStep] = useState(0);
@@ -297,18 +305,10 @@ export default function LivePreviewExample({ toggleDialog }) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  //   const handleBack = () => {
-  //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  //   };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
   const handleSuccess = () => {
-    handleReset();
-    // Add transaction to firestore and close dialog
-    toggleDialog(false);
+    Promise.resolve()
+      .then(() => dispatch(addTransactionAction(uid, values)))
+      .then(() => toggleDialog(false));
   };
 
   // Handle transaction information state
@@ -323,8 +323,6 @@ export default function LivePreviewExample({ toggleDialog }) {
 
   const handleChange = (event) =>
     setValues({ ...values, [event.target.name]: event.target.value });
-
-  console.log(values);
 
   return (
     <div>
@@ -346,13 +344,7 @@ export default function LivePreviewExample({ toggleDialog }) {
       ) : (
         <div>
           <div>
-            {getStepContent(
-              activeStep,
-              handleChange,
-              values,
-              handleNext,
-              handleSuccess
-            )}
+            {getStepContent(activeStep, handleChange, values, handleNext)}
           </div>
           {/* <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
             <Button

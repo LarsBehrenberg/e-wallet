@@ -42,7 +42,7 @@ const LeftSidebar = (props) => {
               <div className="app-content--inner__wrapper">{children}</div>
               <div
                 className="position-fixed"
-                style={{ bottom: '5vh', right: '2vw' }}>
+                style={{ bottom: '3vh', right: '2vw' }}>
                 <AddTransactionButton />
               </div>
             </div>

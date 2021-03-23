@@ -8,7 +8,7 @@ import FormStepper from './FormStepper';
 
 const AddTransactionButton = () => {
   // Open and close dialog => handle dialog state
-  const [showDialog, setShowDialog] = useState(true);
+  const [showDialog, setShowDialog] = useState(false);
   const toggleDialog = (bool) => setShowDialog(bool);
 
   // First
@@ -26,7 +26,7 @@ const AddTransactionButton = () => {
         </span>
       </Button>
       <Dialog
-        classes={{ paper: 'rounded-lg modal-light' }}
+        classes={{ paper: 'rounded-lg modal-light m-0 m-sm-1' }}
         open={showDialog}
         onClose={() => toggleDialog(false)}>
         <FormStepper toggleDialog={toggleDialog} />

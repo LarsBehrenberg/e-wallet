@@ -118,9 +118,26 @@ export const receiveTransactions = async (uid) => {
   if (!uid) return;
   const userRef = await firestore.collection(`users/${uid}/transactions`).get();
   const transactions = userRef.docs.map((doc) => doc.data());
-
-  console.log(transactions);
   return transactions;
+};
+
+// Add new transaction
+export const addTransaction = async (uid, transaction) => {
+  if (!uid) return;
+  const currentDate = new Date();
+
+  const collectionRef = firestore.collection(`users/${uid}/transactions`);
+
+  collectionRef
+    .add({
+      ...transaction,
+      date: currentDate
+    })
+    .then((docRef) => {
+      docRef.update({
+        transactionsID: docRef.id
+      });
+    });
 };
 
 // Create new user with email

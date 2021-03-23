@@ -1,7 +1,8 @@
 import firebase, {
   provider,
   receiveIncomeExpenseCategories,
-  receiveTransactions
+  receiveTransactions,
+  addTransaction
 } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
@@ -10,6 +11,7 @@ export const SIGN_IN_ERR = 'SIGN_IN_ERR';
 export const SIGN_OUT = 'SIGN_OUT';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_ERR = 'SIGN_UP_ERR';
+export const ADD_TRANSACTION = 'ADD_TRANSACTION';
 
 export const signInWithGoogle = () => {
   return (dispatch) => {
@@ -33,6 +35,29 @@ export const signInWithGoogle = () => {
                 dispatch({ type: SIGN_IN_ERR }, err);
               });
             // Dispatch login and set user object in redux store
+          })
+          .catch((err) => {
+            // Catch error and reset redux store to initial empty state
+            dispatch({ type: SIGN_IN_ERR }, err);
+          });
+      })
+      .catch((err) => {
+        // Catch error and reset redux store to initial empty state
+        dispatch({ type: SIGN_IN_ERR }, err);
+      });
+  };
+};
+
+export const addTransactionAction = (uid, transaction) => {
+  return (dispatch) => {
+    addTransaction(uid, transaction)
+      .then(() => {
+        receiveTransactions(uid)
+          .then((transactions) => {
+            dispatch({
+              type: ADD_TRANSACTION,
+              payload: { transactions }
+            });
           })
           .catch((err) => {
             // Catch error and reset redux store to initial empty state
@@ -106,6 +131,11 @@ const authReducer = (state = initialState, action) => {
         profile: action.payload.categories,
         transactions: action.payload.transactions,
         loggedIn: true
+      };
+    case ADD_TRANSACTION:
+      return {
+        ...state,
+        transactions: action.payload.transactions
       };
     case SIGN_IN_ERR:
       console.error('Sign in error...');
