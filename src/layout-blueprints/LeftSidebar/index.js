@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Sidebar, Header, Footer } from '../../layout-components';
+import AddTransactionButton from '../../components/AddTransactionButton';
 
 const LeftSidebar = (props) => {
   const {
@@ -39,6 +40,11 @@ const LeftSidebar = (props) => {
           <div className="app-content">
             <div className="app-content--inner">
               <div className="app-content--inner__wrapper">{children}</div>
+              <div
+                className="position-fixed"
+                style={{ bottom: '5vh', right: '2vw' }}>
+                <AddTransactionButton />
+              </div>
             </div>
             <Footer />
           </div>

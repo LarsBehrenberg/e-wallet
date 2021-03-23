@@ -36,7 +36,11 @@ const LandingPage = ({ uid, signInWithGoogle }) => {
             style={{ backgroundImage: 'url(' + hero2 + ')' }}
           />
           <div className="bg-composed-wrapper--bg bg-second " />
-          <div className="bg-composed-wrapper--content">
+          <div
+            className="bg-composed-wrapper--content"
+            style={{
+              overflowX: 'hidden'
+            }}>
             <Container className="text-second pt-4">
               <Container className="text-white mb-5">
                 <Grid container spacing={6}>
@@ -207,7 +211,7 @@ const LandingPage = ({ uid, signInWithGoogle }) => {
 };
 
 const mapStateToProps = (state) => {
-  const uid = state.auth.user.uid;
+  const uid = state.auth.user?.uid;
   return {
     uid
   };
