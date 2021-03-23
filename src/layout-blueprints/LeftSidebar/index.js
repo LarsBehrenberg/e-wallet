@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { Sidebar, Header, Footer } from '../../layout-components';
-import AddTransactionButton from '../../components/AddTransactionButton';
+import AddTransactionButton from '../../components/AddTransaction/Button';
 
 const LeftSidebar = (props) => {
   const {
