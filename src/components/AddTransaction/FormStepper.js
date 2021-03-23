@@ -1,34 +1,32 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import {
   Grid,
   Container,
-  InputLabel,
-  FormControlLabel,
-  Checkbox,
   MenuItem,
   Button,
   TextField,
-  FormControl,
-  Select
+  Chip
 } from '@material-ui/core';
 
+// Formating functions
 import NumberFormat from 'react-number-format';
+import { getCurrencySymbol } from '../../utils/getCurrencySymbol';
 
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Check from '@material-ui/icons/Check';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import StepConnector from '@material-ui/core/StepConnector';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import ClassIcon from '@material-ui/icons/Class';
 
 function NumberFormatCustom(props) {
   const { inputRef, onChange, ...other } = props;
-  console.log(props);
   return (
     <NumberFormat
       {...other}
@@ -43,140 +41,191 @@ function NumberFormatCustom(props) {
       }}
       thousandSeparator
       isNumericString
-      prefix={props.currency}
+      prefix={`${props.currency} `}
     />
   );
 }
 
-const Step1 = ({ handleChange, values }) => {
+const Step1 = ({ handleChange, values, nextModal }) => {
+  const { currencies } = useSelector((state) => state.auth.profile);
+
+  const handleSubmit = (name, value) => {
+    handleChange({
+      target: {
+        name,
+        value
+      }
+    });
+
+    nextModal();
+  };
   return (
     <Container>
       <div className="p-4">
-        <h5 className="font-size-xl mb-1 font-weight-bold">
+        <h5 className="font-size-xl mb-1 font-weight-bold text-center">
           Amount &amp; Type
         </h5>
-        <p className="text-black-50 mb-4">
+        <p className="text-black-50 mb-4  text-center">
           Small section summary description can be added here!
         </p>
-        <Grid container spacing={6}>
-          <Grid item>
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={5}>
             <TextField
               label="Amount"
               value={values.amount}
               currency="true"
               onChange={handleChange}
               name="amount"
+              autoComplete="off"
+              inputProps={{
+                currency: getCurrencySymbol(values.currency)
+              }}
               id="amount"
               InputProps={{
-                inputComponent: NumberFormatCustom,
-                currency: 'test'
+                inputComponent: NumberFormatCustom
               }}
             />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              style={{ marginTop: '16px' }}
+              fullWidth
+              id="currency"
+              name="currency"
+              select
+              value={values.currency}
+              onChange={handleChange}>
+              {currencies.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {`${getCurrencySymbol(option)}`}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item>
+            <div className="rounded mt-4 p-4 d-flex align-items-center justify-content-around bg-secondary">
+              <Button
+                className="btn-primary font-weight-bold px-5"
+                value="Income"
+                name="type"
+                onClick={() => handleSubmit('type', 'Income')}
+                disabled={typeof values.amount !== 'number'}>
+                Income
+              </Button>
+              <Button
+                className="btn-primary font-weight-bold px-5"
+                disabled={typeof values.amount !== 'number'}
+                onClick={() => handleSubmit('type', 'Expense')}
+                value="Expense"
+                name="type">
+                Expense
+              </Button>
+            </div>
           </Grid>
         </Grid>
       </div>
     </Container>
   );
 };
-const Step2 = () => {
-  const [state, setState] = useState('');
+const Step2 = ({ handleChange, values, nextModal }) => {
+  const { profile } = useSelector((state) => state.auth);
 
-  const handleChange = (event) => {
-    setState(event.target.value);
+  const categories = profile[values.type.toLowerCase() + 'Categories'];
+
+  const handleSubmit = (name, value) => {
+    handleChange({
+      target: {
+        name,
+        value
+      }
+    });
+
+    nextModal();
   };
 
   return (
-    <>
-      <Container>
-        <div className="p-4">
-          <h5 className="font-size-xl mb-1 font-weight-bold">
-            Billing information
-          </h5>
-          <p className="text-black-50 mb-4">Wonderful transition effects.</p>
-          <Grid container spacing={6}>
-            <Grid item md={12}>
-              <TextField
-                fullWidth
-                label="Address 2"
-                multiline
-                rows={4}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6}>
-              <TextField
-                fullWidth
-                label="Password"
-                type="password"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={3}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  State
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={state}
-                  onChange={handleChange}
-                  label="State">
-                  <MenuItem value="">None</MenuItem>
-                  <MenuItem value={10}>California</MenuItem>
-                  <MenuItem value={20}>Texas</MenuItem>
-                  <MenuItem value={30}>Alabama</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item md={3}>
-              <TextField fullWidth label="Zip" variant="outlined" />
-            </Grid>
-            <Grid item md={12} className="pt-0">
-              <FormControlLabel
-                control={<Checkbox name="checkedC" />}
-                label="Check me out"
-              />
-            </Grid>
+    <Container>
+      <div className="p-4">
+        <h5 className="font-size-xl mb-1 font-weight-bold text-center">
+          Category &amp; Description
+        </h5>
+        <p className="text-black-50 mb-4  text-center">
+          Small section summary description can be added here!
+        </p>
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={10}>
+            <TextField
+              label="Description"
+              value={values.description}
+              currency="true"
+              fullWidth
+              onChange={handleChange}
+              name="description"
+              id="description"
+            />
           </Grid>
-        </div>
-      </Container>
-    </>
+          <Grid
+            item
+            xs={10}
+            className="my-3 d-flex justify-content-center flex-wrap">
+            {values.description &&
+              categories.map((value) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  name="category"
+                  value={value}
+                  className="mx-1 my-2 btn btn-primary"
+                  onClick={() => handleSubmit('category', value)}
+                />
+              ))}
+          </Grid>
+        </Grid>
+      </div>
+    </Container>
   );
 };
-const Step3 = () => {
+const Step3 = ({ handleChange, handleSuccess }) => {
+  const { wallets } = useSelector((state) => state.auth.profile);
+
+  const handleSubmit = (name, value) => {
+    handleChange({
+      target: {
+        name,
+        value
+      }
+    });
+    handleSuccess();
+  };
   return (
-    <>
-      <Container>
-        <div className="p-4">
-          <h5 className="font-size-xl mb-1 font-weight-bold">
-            Payment details
-          </h5>
-          <p className="text-black-50 mb-4">
-            The next and previous buttons help you to navigate through your
-            content.
-          </p>
-          <Grid container spacing={6}>
-            <Grid item md={12}>
-              <TextField
-                fullWidth
-                label="Credit card number"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6}>
-              <TextField fullWidth label="Name on card" variant="outlined" />
-            </Grid>
-            <Grid item md={3}>
-              <TextField fullWidth label="Exp. date" variant="outlined" />
-            </Grid>
-            <Grid item md={3}>
-              <TextField fullWidth label="CVC/CVV" variant="outlined" />
-            </Grid>
+    <Container>
+      <div className="p-4">
+        <h5 className="font-size-xl mb-1 font-weight-bold text-center">
+          Choose your account
+        </h5>
+        <p className="text-black-50 mb-4 text-center">
+          The next and previous buttons help you to navigate through your
+          content.
+        </p>
+        <Grid container spacing={6}>
+          <Grid
+            item
+            xs={12}
+            className="d-flex flex-row justify-content-center flex-wrap">
+            {wallets.map((value) => (
+              <Button
+                key={value}
+                className="btn-primary font-weight-bold p-3 px-5 rounded m-2 font-size-md"
+                onClick={() => handleSubmit('wallet', value)}
+                value="Expense"
+                name="type">
+                {value}
+              </Button>
+            ))}
           </Grid>
-        </div>
-      </Container>
-    </>
+        </Grid>
+      </div>
+    </Container>
   );
 };
 
@@ -184,9 +233,9 @@ function StepIcon(props) {
   const { active, completed } = props;
 
   const icons = {
-    1: <SettingsIcon />,
-    2: <GroupAddIcon />,
-    3: <VideoLabelIcon />
+    1: <AttachMoneyIcon />,
+    2: <ClassIcon />,
+    3: <AccountBalanceIcon />
   };
 
   return (
@@ -209,20 +258,37 @@ StepIcon.propTypes = {
   icon: PropTypes.node
 };
 
-function getStepContent(step, handleChange, values) {
+function getStepContent(step, handleChange, values, handleNext, handleSuccess) {
   switch (step) {
     case 0:
-      return <Step1 handleChange={handleChange} values={values} />;
+      return (
+        <Step1
+          handleChange={handleChange}
+          values={values}
+          nextModal={handleNext}
+        />
+      );
     case 1:
-      return <Step2 />;
+      return (
+        <Step2
+          handleChange={handleChange}
+          values={values}
+          nextModal={handleNext}
+        />
+      );
     case 2:
-      return <Step3 />;
+      return (
+        <Step3 handleChange={handleChange} handleSuccess={handleSuccess} />
+      );
     default:
       return <Step1 />;
   }
 }
 
 export default function LivePreviewExample({ toggleDialog }) {
+  // Redux
+  const { currencies } = useSelector((state) => state.auth.profile);
+
   // Handle the stepper
   const [activeStep, setActiveStep] = useState(0);
   const steps = ['Amount', 'Category', 'Wallet'];
@@ -231,25 +297,28 @@ export default function LivePreviewExample({ toggleDialog }) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  //   const handleBack = () => {
+  //     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  //   };
 
   const handleReset = () => {
     setActiveStep(0);
   };
 
-  const finishTransaction = () => {
+  const handleSuccess = () => {
     handleReset();
     // Add transaction to firestore and close dialog
-    toggleDialog();
+    toggleDialog(false);
   };
 
   // Handle transaction information state
   const [values, setValues] = useState({
     amount: null,
-    currency: '$',
-    type: ''
+    currency: currencies[0],
+    type: '',
+    description: '',
+    category: '',
+    wallet: ''
   });
 
   const handleChange = (event) =>
@@ -273,11 +342,19 @@ export default function LivePreviewExample({ toggleDialog }) {
         </Stepper>
       </div>
       {activeStep === steps.length ? (
-        finishTransaction()
+        handleSuccess()
       ) : (
         <div>
-          <div>{getStepContent(activeStep, handleChange, values)}</div>
-          <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
+          <div>
+            {getStepContent(
+              activeStep,
+              handleChange,
+              values,
+              handleNext,
+              handleSuccess
+            )}
+          </div>
+          {/* <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
             <Button
               disabled={activeStep === 0}
               className="btn-primary font-weight-bold"
@@ -289,7 +366,7 @@ export default function LivePreviewExample({ toggleDialog }) {
               onClick={handleNext}>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

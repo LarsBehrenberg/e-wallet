@@ -10,7 +10,7 @@ import {
   totalIncomeCurrentMonth as tICM,
   relationIncomeLastCurrentMonth,
   totalExpenseCurrentMonth
-} from '../utils/transactions-calculations';
+} from '../utils/transactionsCalculations';
 
 export default function LivePreviewExample() {
   const { transactions } = useSelector((state) => state.auth);

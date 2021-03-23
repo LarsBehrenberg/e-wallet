@@ -32,7 +32,9 @@ export const receiveIncomeExpenseCategories = async (uid) => {
   const categories = await userRef.get().then((doc) => {
     const categories = {
       incomeCategories: [],
-      expenseCategories: []
+      expenseCategories: [],
+      currencies: [],
+      wallets: []
     };
     if (!doc.exists) {
       console.log('No such document!');
@@ -52,9 +54,21 @@ export const receiveIncomeExpenseCategories = async (uid) => {
             'Other'
           ]
         });
+        categories.expenseCategories = [
+          ('Food',
+          'Transportation',
+          'Utility Bill',
+          'Medical',
+          'Savings',
+          'Rent',
+          'Clothing',
+          'Necessaries',
+          'Other')
+        ];
       } else {
         categories.expenseCategories = doc.get('expenseCategories');
       }
+
       if (doc.get('incomeCategories') == null) {
         userRef.update({
           incomeCategories: [
@@ -65,8 +79,33 @@ export const receiveIncomeExpenseCategories = async (uid) => {
             'Other'
           ]
         });
+        categories.incomeCategories = [
+          'Salary',
+          'Freelance Work',
+          'Pocket Money',
+          'Carried Over',
+          'Other'
+        ];
       } else {
         categories.incomeCategories = doc.get('incomeCategories');
+      }
+
+      if (doc.get('currencies') == null) {
+        userRef.update({
+          currencies: ['JPY', 'EUR', 'USD']
+        });
+        categories.currencies = ['JPY', 'EUR', 'USD'];
+      } else {
+        categories.currencies = doc.get('currencies');
+      }
+
+      if (doc.get('wallets') == null) {
+        userRef.update({
+          wallets: ['Cash', 'Debit', 'Credit']
+        });
+        categories.wallets = ['Cash', 'Debit', 'Credit'];
+      } else {
+        categories.wallets = doc.get('wallets');
       }
     }
     return categories;
