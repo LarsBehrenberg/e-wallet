@@ -62,6 +62,7 @@ function NumberFormatCustom(props) {
 const Step1 = ({ handleChange, values, nextModal }) => {
   const { currencies } = useSelector((state) => state.auth.profile);
   const [currentAmount, setCurrentAmount] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleDateChange = (date) => {
     handleChange({
@@ -75,7 +76,9 @@ const Step1 = ({ handleChange, values, nextModal }) => {
   const buttonDisabled =
     typeof currentAmount !== 'number' || isNaN(currentAmount);
 
-  const currenciesString = currencies.join();
+  const currenciesString = currencies
+    .filter((i) => i !== values.currency)
+    .join();
 
   const handleSubmit = async (name, value) => {
     fetch(
@@ -90,7 +93,7 @@ const Step1 = ({ handleChange, values, nextModal }) => {
         return response.json();
       })
       .then(function ({ rates }) {
-        const objectDuplicate = { ...rates };
+        const objectDuplicate = { ...rates, [values.currency]: 1 };
         for (const [key, value] of Object.entries(objectDuplicate)) {
           objectDuplicate[key] = (value * currentAmount).toFixed(2);
         }
@@ -115,92 +118,113 @@ const Step1 = ({ handleChange, values, nextModal }) => {
           data
         )
       )
-      .then(() => nextModal());
+      .then(() => nextModal())
+      .catch((error) => {
+        console.error("The exchange couldn't be fetched...", error);
+        setError(true);
+      });
   };
 
   return (
     <Container>
       <div className="p-4">
-        <h5 className="font-size-xl mb-1 font-weight-bold text-center">
-          Amount &amp; Type
-        </h5>
-        <p className="text-black-50 mb-4  text-center">
-          Small section summary description can be added here!
-        </p>
-        <Grid container spacing={1} justify="center">
-          <Grid item xs={10} className="d-flex justify-content-center my-2">
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                style={{ margin: '0 auto' }}
-                disableToolbar
-                variant="inline"
-                format="yyyy/MM/dd"
-                margin="normal"
-                id="date"
-                label="Date"
-                name="date"
-                value={values.date}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date'
+        {!error ? (
+          <>
+            <h5 className="font-size-xl mb-1 font-weight-bold text-center">
+              Amount &amp; Type
+            </h5>
+            <p className="text-black-50 mb-4  text-center">
+              Small section summary description can be added here!
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-black-50 mb-2  text-center">
+              Please try again soon.
+            </p>
+            <h5 className="font-size-xl mb-3 font-weight-bold text-center">
+              We are sorry the exchange rates for your other currencies couldn't
+              be fetched.
+            </h5>
+          </>
+        )}
+
+        {!error && (
+          <Grid container spacing={1} justify="center">
+            <Grid item xs={10} className="d-flex justify-content-center my-2">
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  style={{ margin: '0 auto' }}
+                  disableToolbar
+                  variant="inline"
+                  format="yyyy/MM/dd"
+                  margin="normal"
+                  id="date"
+                  label="Date"
+                  name="date"
+                  value={values.date}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date'
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={5}>
+              <TextField
+                label="Amount"
+                value={currentAmount}
+                currency="true"
+                onChange={(e) => setCurrentAmount(e.target.value)}
+                name="amount"
+                autoComplete="off"
+                inputProps={{
+                  currency: getCurrencySymbol(values.currency)
+                }}
+                id="amount"
+                InputProps={{
+                  inputComponent: NumberFormatCustom
                 }}
               />
-            </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={2}>
+              <TextField
+                style={{ marginTop: '16px' }}
+                fullWidth
+                id="currency"
+                name="currency"
+                select
+                value={values.currency}
+                onChange={(e) => handleChange(e)}>
+                {currencies.map((option) => (
+                  <MenuItem key={option} name="currency" value={option}>
+                    {`${getCurrencySymbol(option)}`}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={10}>
+              <div className="rounded mt-4 p-4 d-flex align-items-center justify-content-around bg-secondary">
+                <Button
+                  className="btn-primary font-weight-bold px-5"
+                  value="Income"
+                  name="type"
+                  onClick={() => handleSubmit('type', 'Income')}
+                  disabled={buttonDisabled}>
+                  Income
+                </Button>
+                <Button
+                  className="btn-primary font-weight-bold px-5"
+                  disabled={buttonDisabled}
+                  onClick={() => handleSubmit('type', 'Expense')}
+                  value="Expense"
+                  name="type">
+                  Expense
+                </Button>
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={5}>
-            <TextField
-              label="Amount"
-              value={currentAmount}
-              currency="true"
-              onChange={(e) => setCurrentAmount(e.target.value)}
-              name="amount"
-              autoComplete="off"
-              inputProps={{
-                currency: getCurrencySymbol(values.currency)
-              }}
-              id="amount"
-              InputProps={{
-                inputComponent: NumberFormatCustom
-              }}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              style={{ marginTop: '16px' }}
-              fullWidth
-              id="currency"
-              name="currency"
-              select
-              value={values.currency}
-              onChange={handleChange}>
-              {currencies.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {`${getCurrencySymbol(option)}`}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={10}>
-            <div className="rounded mt-4 p-4 d-flex align-items-center justify-content-around bg-secondary">
-              <Button
-                className="btn-primary font-weight-bold px-5"
-                value="Income"
-                name="type"
-                onClick={() => handleSubmit('type', 'Income')}
-                disabled={buttonDisabled}>
-                Income
-              </Button>
-              <Button
-                className="btn-primary font-weight-bold px-5"
-                disabled={buttonDisabled}
-                onClick={() => handleSubmit('type', 'Expense')}
-                value="Expense"
-                name="type">
-                Expense
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
+        )}
       </div>
     </Container>
   );
@@ -414,8 +438,6 @@ export default function LivePreviewExample({ toggleDialog }) {
       handleSuccess();
     }
   });
-
-  console.log(values);
 
   return (
     <div>
