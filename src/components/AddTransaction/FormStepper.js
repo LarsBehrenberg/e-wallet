@@ -61,6 +61,7 @@ function NumberFormatCustom(props) {
 
 const Step1 = ({ handleChange, values, nextModal }) => {
   const { currencies } = useSelector((state) => state.auth.profile);
+  const [currentAmount, setCurrentAmount] = useState(null);
 
   const handleDateChange = (date) => {
     handleChange({
@@ -72,18 +73,51 @@ const Step1 = ({ handleChange, values, nextModal }) => {
   };
 
   const buttonDisabled =
-    typeof values.amount !== 'number' || isNaN(values.amount);
+    typeof currentAmount !== 'number' || isNaN(currentAmount);
 
-  const handleSubmit = (name, value) => {
-    handleChange({
-      target: {
-        name,
-        value
-      }
-    });
+  const currenciesString = currencies.join();
 
-    nextModal();
+  const handleSubmit = async (name, value) => {
+    fetch(
+      `https://api.exchangeratesapi.io/${values.date
+        .toJSON()
+        .slice(0, 10)}?base=${values.currency}&symbols=${currenciesString}`
+    )
+      .then(function (response) {
+        if (response.status >= 400) {
+          throw new Error('Bad response from server');
+        }
+        return response.json();
+      })
+      .then(function ({ rates }) {
+        const objectDuplicate = { ...rates };
+        for (const [key, value] of Object.entries(objectDuplicate)) {
+          objectDuplicate[key] = (value * currentAmount).toFixed(2);
+        }
+        return objectDuplicate;
+      })
+      .then((data) =>
+        handleChange({
+          target: {
+            name: 'amount',
+            value: data
+          }
+        })
+      )
+      .then((data) =>
+        handleChange(
+          {
+            target: {
+              name,
+              value
+            }
+          },
+          data
+        )
+      )
+      .then(() => nextModal());
   };
+
   return (
     <Container>
       <div className="p-4">
@@ -116,9 +150,9 @@ const Step1 = ({ handleChange, values, nextModal }) => {
           <Grid item xs={5}>
             <TextField
               label="Amount"
-              value={values.amount}
+              value={currentAmount}
               currency="true"
-              onChange={handleChange}
+              onChange={(e) => setCurrentAmount(e.target.value)}
               name="amount"
               autoComplete="off"
               inputProps={{
@@ -356,8 +390,15 @@ export default function LivePreviewExample({ toggleDialog }) {
   // Handle transaction information state
   const [values, setValues] = useState(initialState);
 
-  const handleChange = (event) =>
-    setValues({ ...values, [event.target.name]: event.target.value });
+  const handleChange = (event, previousState = { ...values }) => {
+    const newState = {
+      ...previousState,
+      [event.target.name]: event.target.value
+    };
+    setValues(newState);
+
+    return newState;
+  };
 
   const handleSuccess = () => {
     // Make asynchrous setState calls synchronous with promise
@@ -373,6 +414,8 @@ export default function LivePreviewExample({ toggleDialog }) {
       handleSuccess();
     }
   });
+
+  console.log(values);
 
   return (
     <div>
