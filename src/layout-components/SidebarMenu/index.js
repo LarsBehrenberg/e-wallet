@@ -20,6 +20,12 @@ const SidebarMenu = (props) => {
 
   const toggleSidebarMobile = () => setSidebarToggleMobile(false);
 
+  const [transactionsOpen, setTransactionsOpen] = useState(false);
+  const toggleTransactions = (event) => {
+    event.preventDefault();
+    setTransactionsOpen(!transactionsOpen);
+  };
+
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const toggleDashboard = (event) => {
     setDashboardOpen(!dashboardOpen);
@@ -50,21 +56,26 @@ const SidebarMenu = (props) => {
                 </span>
               </NavLink>
             </li>
-
             <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/transactions">
+              <a
+                href="#/"
+                onClick={toggleTransactions}
+                className={clsx({ active: transactionsOpen })}>
                 <span className="sidebar-icon">
                   <BallotTwoToneIcon />
                 </span>
-                Transactions
-                <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
+                <span className="sidebar-item-label">Transactions</span>
+                <span className="sidebar-icon-indicator">
                   <ChevronRightTwoToneIcon />
                 </span>
-              </NavLink>
+              </a>
+              <Collapse in={transactionsOpen}>
+                <ul>
+                  <li>
+                    <NavLink to="/dashboard">Yearly</NavLink>
+                  </li>
+                </ul>
+              </Collapse>
             </li>
             <li>
               <a
@@ -104,40 +115,6 @@ const SidebarMenu = (props) => {
                 </ul>
               </Collapse>
             </li>
-            {/* <li>
-              <a
-                href="#/"
-                onClick={toggleApplication}
-                className={clsx({ active: applicationOpen })}>
-                <span className="sidebar-icon">
-                  <SecurityTwoToneIcon />
-                </span>
-                <span className="sidebar-item-label">
-                  Applications
-                  <div className="badge badge-danger rounded-circle mr-4">
-                    7
-                  </div>
-                </span>
-                <span className="sidebar-icon-indicator">
-                  <ChevronRightTwoToneIcon />
-                </span>
-              </a>
-              <Collapse in={applicationOpen}>
-                <ul>
-                  <li>
-                    <a
-                      href="#/"
-                      onClick={(e) => e.preventDefault()}
-                      className="active">
-                      <span className="sidebar-icon">
-                        <LinkTwoToneIcon />
-                      </span>
-                      <span className="sidebar-item-label">General</span>
-                    </a>
-                  </li>
-                </ul>
-              </Collapse>
-            </li> */}
           </ul>
         </div>
       </PerfectScrollbar>
