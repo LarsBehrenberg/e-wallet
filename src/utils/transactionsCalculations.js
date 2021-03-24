@@ -5,16 +5,22 @@ export const expense = (arr) => arr.filter((item) => item.type === 'Expense');
 const currentDate = new Date();
 
 // Reduce array of transactions to a total amount of JPY
-const calculateTotal = (arr) =>
-  arr.length > 0
-    ? arr.reduce((a, b) => {
+const calculateTotal = (arr) => {
+  switch (arr.length) {
+    case 0:
+      return 0;
+    case 1:
+      return arr[0].amount['JPY'];
+    default:
+      return arr.reduce((a, b) => {
         if (typeof a != 'number') {
           return 0;
         }
 
         return a + b.amount['JPY'];
-      })
-    : 0;
+      });
+  }
+};
 
 // Filter functions to get transaction from this and last month
 const getCurrentMonthTransactions = (arr) =>

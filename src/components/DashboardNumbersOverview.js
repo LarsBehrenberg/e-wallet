@@ -9,7 +9,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import {
   totalIncomeCurrentMonth as tICM,
   relationIncomeLastCurrentMonth,
-  totalExpenseCurrentMonth
+  totalExpenseCurrentMonth as tECM
 } from '../utils/transactionsCalculations';
 
 export default function LivePreviewExample() {
@@ -17,7 +17,7 @@ export default function LivePreviewExample() {
 
   const totalIncomeCurrentMonth = tICM(transactions);
   const incomeComparison = relationIncomeLastCurrentMonth(transactions);
-  const totalExpense = totalExpenseCurrentMonth(transactions);
+  const totalExpenseCurrentMonth = tECM(transactions);
 
   return (
     <>
@@ -32,7 +32,7 @@ export default function LivePreviewExample() {
                       Current Income
                     </small>
                     <span className="font-size-xxl mt-1">
-                      ¥{totalIncomeCurrentMonth.toLocaleString()}
+                      ¥ {totalIncomeCurrentMonth.toLocaleString()}
                     </span>
                   </div>
                   <div className="ml-auto">
@@ -83,7 +83,9 @@ export default function LivePreviewExample() {
                     <small className="text-white-50 d-block mb-1 text-uppercase">
                       Current Expenses
                     </small>
-                    <span className="font-size-xxl mt-1">¥123,122</span>
+                    <span className="font-size-xxl mt-1">
+                      ¥ {totalExpenseCurrentMonth.toLocaleString()}
+                    </span>
                   </div>
                   <div className="ml-auto">
                     <div className="bg-white text-center text-primary font-size-xl d-50 rounded-circle btn-icon">
@@ -111,7 +113,7 @@ export default function LivePreviewExample() {
                       This Month's Budget
                     </small>
                     <span className="font-size-xxl mt-1">
-                      {totalExpense} / ¥90,000
+                      ¥{totalExpenseCurrentMonth.toLocaleString()} / ¥90,000
                     </span>
                   </div>
                   <div className="ml-auto">

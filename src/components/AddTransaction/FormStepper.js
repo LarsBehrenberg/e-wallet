@@ -95,7 +95,7 @@ const Step1 = ({ handleChange, values, nextModal }) => {
       .then(function ({ rates }) {
         const objectDuplicate = { ...rates, [values.currency]: 1 };
         for (const [key, value] of Object.entries(objectDuplicate)) {
-          objectDuplicate[key] = (value * currentAmount).toFixed(2);
+          objectDuplicate[key] = parseFloat((value * currentAmount).toFixed(2));
         }
         return objectDuplicate;
       })
