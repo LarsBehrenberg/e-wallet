@@ -133,7 +133,7 @@ const Routes = () => {
                         render={() => <Redirect to="/dashboard" />}
                       />
                       <Route
-                        path="/transactions/:id"
+                        path="/transactions/:year/:month"
                         component={Transactions}
                       />
                       <Route path="/import" component={Import} />

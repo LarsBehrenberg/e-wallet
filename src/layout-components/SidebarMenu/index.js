@@ -138,7 +138,11 @@ const SidebarMenu = (props) => {
                             .filter((item) => item.slice(0, 4) === year)
                             .map((month) => (
                               <li key={month}>
-                                <NavLink to={`/transactions/${month}`}>
+                                <NavLink
+                                  to={`/transactions/${month.slice(
+                                    0,
+                                    4
+                                  )}/${month.slice(-2)}`}>
                                   {monthNames[parseInt(month.slice(-2)) - 1]}
                                 </NavLink>
                               </li>
