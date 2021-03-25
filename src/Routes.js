@@ -21,7 +21,7 @@ import {
 const LandingPage = lazy(() => import('./pages/landing-page'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
-// const Transactions = lazy(() => import('./pages/transactions'));
+const Transactions = lazy(() => import('./pages/transactions'));
 const Import = lazy(() => import('./pages/import'));
 // const Login = lazy(() => import('./pages/login'));
 // const SignUp = lazy(() => import('./pages/signup'));
@@ -127,12 +127,20 @@ const Routes = () => {
                       variants={pageVariants}
                       transition={pageTransition}>
                       <Route path="/dashboard" component={Dashboard} />
+                      <Route
+                        exact
+                        path="/transactions"
+                        render={() => <Redirect to="/dashboard" />}
+                      />
+                      <Route
+                        path="/transactions/:id"
+                        component={Transactions}
+                      />
                       <Route path="/import" component={Import} />
                       <Route
                         path="/profile-settings"
                         component={ProfileSettings}
                       />
-                      {/* <Route path="/transactions" component={Transactions} /> */}
                     </motion.div>
                   </Switch>
                 </LeftSidebar>
