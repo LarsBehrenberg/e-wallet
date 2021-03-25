@@ -136,17 +136,26 @@ const SidebarMenu = (props) => {
                         <ul>
                           {monthsAscending
                             .filter((item) => item.slice(0, 4) === year)
-                            .map((month) => (
-                              <li key={month}>
-                                <NavLink
-                                  to={`/transactions/${month.slice(
-                                    0,
-                                    4
-                                  )}/${month.slice(-2)}`}>
-                                  {monthNames[parseInt(month.slice(-2)) - 1]}
-                                </NavLink>
-                              </li>
-                            ))}
+                            .map((month) => {
+                              const monthName =
+                                monthNames[parseInt(month.slice(-2)) - 1];
+                              return (
+                                <li key={month}>
+                                  <NavLink
+                                    to={{
+                                      pathname: `/transactions/${month.slice(
+                                        0,
+                                        4
+                                      )}/${month.slice(-2)}`,
+                                      state: {
+                                        monthName
+                                      }
+                                    }}>
+                                    {monthName}
+                                  </NavLink>
+                                </li>
+                              );
+                            })}
                         </ul>
                       </Collapse>
                     </li>

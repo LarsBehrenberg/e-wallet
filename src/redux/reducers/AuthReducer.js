@@ -52,17 +52,13 @@ export const addTransactionAction = (uid, transaction) => {
   return (dispatch) => {
     addTransaction(uid, transaction)
       .then(() => {
-        receiveTransactions(uid)
-          .then((transactions) => {
-            dispatch({
-              type: ADD_TRANSACTION,
-              payload: { transactions }
-            });
-          })
-          .catch((err) => {
-            // Catch error and reset redux store to initial empty state
-            dispatch({ type: SIGN_IN_ERR }, err);
-          });
+        return receiveTransactions(uid);
+      })
+      .then((transactions) => {
+        dispatch({
+          type: ADD_TRANSACTION,
+          payload: { transactions }
+        });
       })
       .catch((err) => {
         // Catch error and reset redux store to initial empty state
