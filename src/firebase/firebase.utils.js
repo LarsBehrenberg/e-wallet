@@ -128,16 +128,47 @@ export const addTransaction = async (uid, transaction) => {
 
   const collectionRef = firestore.collection(`users/${uid}/transactions`);
 
-  collectionRef
+  await collectionRef
     .add({
       ...transaction,
       createdAt: currentDate
     })
     .then((docRef) => {
-      docRef.update({
+      return docRef.update({
         transactionsID: docRef.id
       });
     });
+
+  const transactions = await collectionRef.get();
+  const allTransactions = transactions.docs.map((doc) => doc.data());
+  return allTransactions;
+};
+
+// Add new transaction
+export const removeTransactions = async (uid, deletedTransactions) => {
+  if (!uid) return;
+
+  const collectionRef = firestore
+    .collection('users')
+    .doc(uid)
+    .collection('transactions');
+
+  if (deletedTransactions.length > 1) {
+    // Create batch commit
+    const batch = firestore.batch();
+    // Go through checked items and add to batch delete
+    deletedTransactions.forEach((id) => {
+      const ref = collectionRef.doc(id);
+      batch.delete(ref);
+    });
+    // Fire batch delete
+    await batch.commit().then((data) => console.log(data));
+  } else {
+    await collectionRef.doc(deletedTransactions[0]).delete();
+  }
+
+  const transactions = await collectionRef.get();
+  return transactions.docs.map((doc) => doc.data());
 };
 
 // Create new user with email

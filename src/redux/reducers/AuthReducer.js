@@ -2,7 +2,8 @@ import firebase, {
   provider,
   receiveIncomeExpenseCategories,
   receiveTransactions,
-  addTransaction
+  addTransaction,
+  removeTransactions
 } from '../../firebase/firebase.utils';
 
 export const SIGN_IN = 'SIGN_IN';
@@ -12,6 +13,7 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_ERR = 'SIGN_UP_ERR';
 export const ADD_TRANSACTION = 'ADD_TRANSACTION';
+export const REMOVE_TRANSACTIONS = 'REMOVE_TRANSACTIONS';
 
 export const signInWithGoogle = () => {
   return (dispatch) => {
@@ -51,12 +53,25 @@ export const signInWithGoogle = () => {
 export const addTransactionAction = (uid, transaction) => {
   return (dispatch) => {
     addTransaction(uid, transaction)
-      .then(() => {
-        return receiveTransactions(uid);
-      })
       .then((transactions) => {
         dispatch({
           type: ADD_TRANSACTION,
+          payload: { transactions }
+        });
+      })
+      .catch((err) => {
+        // Catch error and reset redux store to initial empty state
+        dispatch({ type: SIGN_IN_ERR }, err);
+      });
+  };
+};
+
+export const removeTransactionsAction = (uid, transactions) => {
+  return (dispatch) => {
+    removeTransactions(uid, transactions)
+      .then((transactions) => {
+        dispatch({
+          type: REMOVE_TRANSACTIONS,
           payload: { transactions }
         });
       })
@@ -129,6 +144,11 @@ const authReducer = (state = initialState, action) => {
         loggedIn: true
       };
     case ADD_TRANSACTION:
+      return {
+        ...state,
+        transactions: action.payload.transactions
+      };
+    case REMOVE_TRANSACTIONS:
       return {
         ...state,
         transactions: action.payload.transactions
