@@ -8,7 +8,7 @@ import {
   Table,
   Card,
   CardContent,
-  Button,
+  // Button,
   MenuItem,
   TextField
 } from '@material-ui/core';
@@ -32,27 +32,22 @@ export default function Transactions({ props }) {
   const currentYear = currentDate.getFullYear();
 
   // Filter transaction based on the month this transaction page
-  const currentTransactions = [...transactions].filter((e) => {
+  const getCurrentMonthTransactions = [...transactions].filter((e) => {
     // Get Date string from current transaction
     const newDate = new Date(1970, 0, 1);
     newDate.setSeconds(e.date.seconds);
     const string = newDate.toJSON().slice(0, 10);
 
-    var [year, month] = string.split('-'); // Or, var month = e.date.split('-')[1];
-    return currentMonth === +month && currentYear == year;
+    var [year, month] = string.split('-');
+    return currentMonth === +month && currentYear === +year;
   });
 
   // State for transactions array
-  const [filteredTransactions, setFilteredTransactions] = useState([]);
-
-  const filterTransactionsByType = (typeToFiler) =>
-    setFilteredTransactions(
-      filteredTransactions.filter((item) => item.type === typeToFiler)
-    );
+  const [currentMonthTransactions, setCurrentMonthTransactions] = useState([]);
 
   // State for sort & filter transactions
   const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
-  const handleCurrency = (event) => {
+  const handleSelectedCurrency = (event) => {
     event.preventDefault();
     setSelectedCurrency(event.target.value);
   };
@@ -60,37 +55,24 @@ export default function Transactions({ props }) {
   const handleType = (event) => {
     event.preventDefault();
     setType(event.target.value);
-    switch (event.target.value) {
-      case 'All Transactions':
-        resetTransactions();
-        break;
-      case 'Income':
-        filterTransactionsByType('Income');
-        break;
-      case 'Expense':
-        filterTransactionsByType('Expense');
-        break;
-      default:
-        break;
-    }
   };
 
-  console.log(filteredTransactions);
+  console.log(currentMonthTransactions);
 
   // From here deal with check status
   const setChecked = (id) => {
     // Create shallow copy of selected item and reverse checked status
     const currentItem = {
-      ...filteredTransactions.find((item) => item.transactionsID === id)
+      ...currentMonthTransactions.find((item) => item.transactionsID === id)
     };
     currentItem.isChecked = !currentItem.isChecked;
     // Create copy of all transactions and replace old item with new checked/unchecked item
     const updatedTransactions = [
-      ...filteredTransactions.filter((item) => item.transactionsID !== id),
+      ...currentMonthTransactions.filter((item) => item.transactionsID !== id),
       currentItem
     ];
     // Update state with new checked/unchecked item
-    setFilteredTransactions(updatedTransactions);
+    setCurrentMonthTransactions(updatedTransactions);
   };
 
   const deleteTransactions = () => {
@@ -113,18 +95,15 @@ export default function Transactions({ props }) {
     // batch.commit();
   };
 
-  const resetTransactions = () =>
-    setFilteredTransactions(
-      Object.keys(currentTransactions).map((item) => {
-        return { ...currentTransactions[item], isChecked: false };
-      })
-    );
-
   useEffect(() => {
-    // Instead of using firestore transactions state we want to use local state for displaying all transactions. However, we need to wait with useEffect until transactions have loaded in to store them in the local state.
-    if (currentTransactions) {
-      resetTransactions();
+    if (getCurrentMonthTransactions) {
+      setCurrentMonthTransactions(
+        Object.keys(getCurrentMonthTransactions).map((item) => {
+          return { ...getCurrentMonthTransactions[item], isChecked: false };
+        })
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -166,7 +145,7 @@ export default function Transactions({ props }) {
                 name="type"
                 select
                 value={selectedCurrency}
-                onChange={handleCurrency}>
+                onChange={handleSelectedCurrency}>
                 {currencies.map((option) => (
                   <MenuItem key={option} name="currency" value={option}>
                     {`${getCurrencySymbol(option)}`}
@@ -185,13 +164,13 @@ export default function Transactions({ props }) {
           )} */}
         </div>
         <CardContent className="px-0 pt-2 pb-3">
-          {filteredTransactions.length === 0 && (
+          {currentMonthTransactions.length === 0 && (
             <div className="text-center my-4">
               We couldn't find any transactions for this category!
             </div>
           )}
 
-          {filteredTransactions && filteredTransactions.length > 1 && (
+          {currentMonthTransactions && currentMonthTransactions.length > 1 && (
             <Table className="table table-borderless table-hover table-alternate text-nowrap mb-0">
               <thead>
                 <tr>
@@ -204,8 +183,14 @@ export default function Transactions({ props }) {
                 </tr>
               </thead>
               <tbody>
-                {filteredTransactions &&
-                  filteredTransactions
+                {currentMonthTransactions &&
+                  currentMonthTransactions
+                    .filter((item) => {
+                      if (type === 'All Transactions') {
+                        return true;
+                      }
+                      return item.type === type;
+                    })
                     .sort(
                       firstBy(function (a, b) {
                         const aDate = new Date(1970, 0, 1),
