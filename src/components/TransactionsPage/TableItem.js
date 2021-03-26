@@ -1,18 +1,24 @@
 import React from 'react';
 import { Checkbox } from '@material-ui/core';
 
+// Utils
+import { getCurrencySymbol } from '../../utils/getCurrencySymbol';
+
 const TableItem = ({
   description,
   type,
   wallet,
   amount,
   date,
-  currency,
   category,
   isChecked,
   transactionsID,
-  setChecked
+  setChecked,
+  selectedCurrency,
+  currentMonth
 }) => {
+  const transactionDate = new Date();
+  transactionDate.setSeconds(date.seconds);
   return (
     <tr>
       <td>
@@ -26,7 +32,7 @@ const TableItem = ({
         <div className="d-flex">
           <div>
             <span className="font-weight-bold text-black">
-              {new Date(date.seconds * 1000).toISOString().split('T')[0]}
+              {`${transactionDate.getDate()}th ${currentMonth}`}
             </span>
           </div>
         </div>
@@ -40,16 +46,18 @@ const TableItem = ({
           </div>
         </div>
       </td>
-      <td className="text-center">
+      {/* <td className="text-center">
         <span className="font-weight-bold ">{type}</span>
-      </td>
+      </td> */}
       <td className="text-center">
         <span
           className={`font-weight-bold ${
             type === 'Expense' ? 'text-danger' : 'text-success'
           }`}>
           {type === 'Expense' ? '-' : ''}
-          {`${amount['JPY'].toLocaleString()} (JPY)`}
+          {`${getCurrencySymbol(selectedCurrency)} ${amount[
+            selectedCurrency
+          ].toLocaleString()}`}
         </span>
       </td>
       <td className="text-center">
