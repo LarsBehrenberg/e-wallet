@@ -78,6 +78,7 @@ const SidebarMenu = (props) => {
     const yearsState = {};
     years.forEach((year) => (yearsState[year] = false));
     setMenuItemsOpen(yearsState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

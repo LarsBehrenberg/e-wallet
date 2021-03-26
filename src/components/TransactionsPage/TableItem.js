@@ -17,7 +17,7 @@ const TableItem = ({
   selectedCurrency,
   currentMonth
 }) => {
-  const transactionDate = new Date();
+  const transactionDate = new Date(1970, 0, 1);
   transactionDate.setSeconds(date.seconds);
   return (
     <tr>

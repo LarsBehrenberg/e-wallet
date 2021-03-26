@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 // Redux & Firebase
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeTransactionsAction } from '../../redux/reducers/AuthReducer';
 
 // Components
 import {
   Table,
   Card,
   CardContent,
-  // Button,
+  Button,
   MenuItem,
   TextField
 } from '@material-ui/core';
@@ -19,10 +20,13 @@ import { getCurrencySymbol } from '../../utils/getCurrencySymbol';
 import { firstBy } from 'thenby';
 
 export default function Transactions({ props }) {
+  // Redux
   const {
     transactions,
-    profile: { currencies }
+    profile: { currencies },
+    user: { uid }
   } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   // Create date specific to the month transaction page
   const currentDate = new Date(1970, 0, 1);
@@ -57,14 +61,12 @@ export default function Transactions({ props }) {
     setType(event.target.value);
   };
 
-  console.log(currentMonthTransactions);
-
   // From here deal with check status
   const setChecked = (id) => {
     // Create shallow copy of selected item and reverse checked status
-    const currentItem = {
-      ...currentMonthTransactions.find((item) => item.transactionsID === id)
-    };
+    const currentItem = currentMonthTransactions.find(
+      (item) => item.transactionsID === id
+    );
     currentItem.isChecked = !currentItem.isChecked;
     // Create copy of all transactions and replace old item with new checked/unchecked item
     const updatedTransactions = [
@@ -75,24 +77,18 @@ export default function Transactions({ props }) {
     setCurrentMonthTransactions(updatedTransactions);
   };
 
-  const deleteTransactions = () => {
+  const deleteTransactions = async () => {
     // Get ids of all checked items
-    // const transactionsToDelete = state
-    //   .filter((item) => item.isChecked === true)
-    //   .map((item) => item.transactionsID);
-    // // Create batch commit
-    // const batch = firestore.batch();
-    // // Go through checked items and add to batch delete
-    // transactionsToDelete.forEach((id) => {
-    //   const ref = firestore
-    //     .collection('users')
-    //     .doc(uid)
-    //     .collection('transactions')
-    //     .doc(id);
-    //   batch.delete(ref);
+    const transactionsToDelete = currentMonthTransactions
+      .filter((item) => item.isChecked === true)
+      .map((item) => item.transactionsID);
+    // Fire Redux Action
+    Promise.resolve().then(() =>
+      dispatch(removeTransactionsAction(uid, transactionsToDelete))
+    );
+    // .then(() => {
+    //   window.location.reload();
     // });
-    // // Fire batch delete
-    // batch.commit();
   };
 
   useEffect(() => {
@@ -104,8 +100,9 @@ export default function Transactions({ props }) {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [transactions]);
 
+  console.log(currentMonthTransactions.length);
   return (
     <>
       <Card className="card-box mb-spacing-6-x2 overflow-auto">
@@ -123,8 +120,23 @@ export default function Transactions({ props }) {
             </div>
 
             <div className="mr-0 ml-auto d-flex align-items-center ">
+              {!!currentMonthTransactions
+                .filter((item) => {
+                  if (type === 'All Transactions') {
+                    return true;
+                  }
+                  return item.type === type;
+                })
+                .find((item) => item.isChecked === true) && (
+                <Button
+                  size="small"
+                  className="btn-neutral-danger mr-3 mt-2"
+                  onClick={deleteTransactions}>
+                  Delete Items
+                </Button>
+              )}
               <TextField
-                style={{ marginTop: '16px', width: '100px' }}
+                style={{ marginTop: '16px', width: '140px' }}
                 id="type-select"
                 fullWidth
                 name="type"
@@ -154,14 +166,6 @@ export default function Transactions({ props }) {
               </TextField>
             </div>
           </div>
-          {/* {!!state?.find((item) => item.isChecked === true) && (
-            <Button
-              size="small"
-              className="btn-neutral-danger "
-              onClick={deleteTransactions}>
-              Delete Items
-            </Button>
-          )} */}
         </div>
         <CardContent className="px-0 pt-2 pb-3">
           {currentMonthTransactions.length === 0 && (
@@ -170,7 +174,7 @@ export default function Transactions({ props }) {
             </div>
           )}
 
-          {currentMonthTransactions && currentMonthTransactions.length > 1 && (
+          {currentMonthTransactions && currentMonthTransactions.length > 0 && (
             <Table className="table table-borderless table-hover table-alternate text-nowrap mb-0">
               <thead>
                 <tr>
@@ -204,12 +208,12 @@ export default function Transactions({ props }) {
                         );
                       })
                     )
-                    .map(({ transactionsID, ...otherProps }, index) => {
+                    .map(({ transactionsID, ...otherProps }) => {
                       return (
                         <Transaction
                           currentMonth={props.monthName}
                           selectedCurrency={selectedCurrency}
-                          key={transactionsID ? transactionsID : index}
+                          key={transactionsID}
                           transactionsID={transactionsID}
                           {...otherProps}
                           setChecked={setChecked}
