@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import ImportCSV from '../components/importCSV';
+import ImportCSV from '../components/ImportPage/ImportCSV';
 import CloudUploadTwoToneIcon from '@material-ui/icons/CloudUploadTwoTone';
 
 export default function Import() {
@@ -25,7 +25,7 @@ export default function Import() {
         </div>
         <div className="d-flex align-items-center"></div>
       </div>
-      {/* <ImportCSV /> */}
+      <ImportCSV />
     </>
   );
 }

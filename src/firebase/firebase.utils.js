@@ -2,6 +2,9 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
+// Fetch Polyfill
+import fetch from 'isomorphic-fetch';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBWktr2V9sxKtTkpIiIHuieRtENCgv0fQw',
   authDomain: 'e-wallet-294df.firebaseapp.com',
@@ -144,7 +147,7 @@ export const addTransaction = async (uid, transaction) => {
   return allTransactions;
 };
 
-// Add new transaction
+// Remove transaction/s
 export const removeTransactions = async (uid, deletedTransactions) => {
   if (!uid) return;
 
@@ -162,7 +165,7 @@ export const removeTransactions = async (uid, deletedTransactions) => {
       batch.delete(ref);
     });
     // Fire batch delete
-    await batch.commit().then((data) => console.log(data));
+    await batch.commit();
   } else {
     await collectionRef.doc(deletedTransactions[0]).delete();
   }
@@ -171,28 +174,97 @@ export const removeTransactions = async (uid, deletedTransactions) => {
   return transactions.docs.map((doc) => doc.data());
 };
 
-// Create new user with email
-export const createUserProfileDocument = async (userAuth, additionalData) => {
-  if (!userAuth) return;
+// Import transactions via CSV
+export const importTransactions = async (uid, currencies, file) => {
+  if (!uid) return;
 
-  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const collectionRef = firestore
+    .collection('users')
+    .doc(uid)
+    .collection('transactions');
 
-  const snapShot = await userRef.get();
+  // data array with transaction objects
+  const data = file.data;
+  let itemsProcessed = 0;
 
-  if (!snapShot.exists) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
-    try {
-      await userRef.set({
-        displayName,
-        email,
-        createdAt,
-        ...additionalData
-      });
-    } catch (error) {
-      console.log('error creating user', error.message);
-    }
+  // Create batch commit => max 500 commits
+  if (data.length > 1) {
+    const batch = firestore.batch();
+
+    data.forEach((item, index, array) => {
+      const currentAmount = parseFloat(item.Amount);
+
+      const currenciesString = currencies
+        .filter((i) => i !== item.Currency)
+        .join();
+
+      fetch(
+        `https://api.exchangeratesapi.io/${item.Date}?base=${item.Currency}&symbols=${currenciesString}`
+      )
+        .then(function (response) {
+          if (response.status >= 400) {
+            throw new Error('Bad response from server');
+          }
+          return response.json();
+        })
+        .then(function ({ rates }) {
+          const objectDuplicate = { ...rates, [item.Currency]: 1 };
+          for (const [key, value] of Object.entries(objectDuplicate)) {
+            objectDuplicate[key] = parseFloat(
+              (value * currentAmount).toFixed(2)
+            );
+          }
+          return objectDuplicate;
+        })
+        .then((amount) => {
+          itemsProcessed++;
+          const collectionDoc = collectionRef.doc();
+          batch.set(collectionDoc, {
+            description: item.Description,
+            amount,
+            transactionsID: collectionDoc.id,
+            currency: item.Currency,
+            taxRelevant: item.taxRelevant === 'TRUE' ? true : false,
+            wallet: item.Wallet,
+            type: item.Type,
+            date: new Date(item.Date),
+            createdAt: new Date(),
+            category: item.Category
+          });
+
+          if (itemsProcessed === array.length) {
+            batch.commit();
+          }
+        });
+    });
   }
 
-  return userRef;
+  const transactions = await collectionRef.get();
+  return transactions.docs.map((doc) => doc.data());
 };
+
+// Create new user with email
+// export const createUserProfileDocument = async (userAuth, additionalData) => {
+//   if (!userAuth) return;
+
+//   const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+//   const snapShot = await userRef.get();
+
+//   if (!snapShot.exists) {
+//     const { displayName, email } = userAuth;
+//     const createdAt = new Date();
+//     try {
+//       await userRef.set({
+//         displayName,
+//         email,
+//         createdAt,
+//         ...additionalData
+//       });
+//     } catch (error) {
+//       console.log('error creating user', error.message);
+//     }
+//   }
+
+//   return userRef;
+// };
