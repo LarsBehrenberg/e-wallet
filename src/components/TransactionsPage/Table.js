@@ -102,7 +102,6 @@ export default function Transactions({ props }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactions]);
 
-  console.log(currentMonthTransactions.length);
   return (
     <>
       <Card className="card-box mb-spacing-6-x2 overflow-auto">

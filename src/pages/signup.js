@@ -56,8 +56,6 @@ class SignUp extends React.Component {
   render() {
     const { displayName, email, password, confirmPassword } = this.state;
 
-    console.log(this.state);
-
     return this.props.loggedIn ? (
       <Redirect to="/dashboard" />
     ) : (

@@ -15,7 +15,8 @@ import {
   MenuItem,
   Button,
   TextField,
-  Chip
+  Chip,
+  Switch
 } from '@material-ui/core';
 
 // Mui Date
@@ -287,7 +288,7 @@ const Step2 = ({ handleChange, values, nextModal }) => {
     </Container>
   );
 };
-const Step3 = ({ handleChange }) => {
+const Step3 = ({ handleChange, values }) => {
   const { wallets } = useSelector((state) => state.auth.profile);
 
   const handleSubmit = (name, value) =>
@@ -304,11 +305,28 @@ const Step3 = ({ handleChange }) => {
         <h5 className="font-size-xl mb-1 font-weight-bold text-center">
           Choose your account
         </h5>
-        <p className="text-black-50 mb-4 text-center">
-          The next and previous buttons help you to navigate through your
-          content.
-        </p>
-        <Grid container spacing={6}>
+        <Grid container>
+          <Grid
+            item
+            xs={12}
+            className="d-flex flex-row my-3 mx-3 align-items-center">
+            <p className="text-black-50 m-0">
+              Choose to make this transaction relevant for your tax declaration
+              at the end of the year.
+            </p>
+            <Switch
+              checked={values.taxRelevant}
+              onClick={() =>
+                handleChange({
+                  target: {
+                    name: 'taxRelevant',
+                    value: !values.taxRelevant
+                  }
+                })
+              }
+              className="switch-medium toggle-switch-primary ml-4 mr-2"
+            />
+          </Grid>
           <Grid
             item
             xs={12}
@@ -378,7 +396,7 @@ function getStepContent(step, handleChange, values, handleNext) {
         />
       );
     case 2:
-      return <Step3 handleChange={handleChange} />;
+      return <Step3 handleChange={handleChange} values={values} />;
     default:
       return <Step1 />;
   }
@@ -408,7 +426,8 @@ export default function LivePreviewExample({ toggleDialog }) {
     description: '',
     category: '',
     wallet: '',
-    date: new Date(new Date().toJSON().slice(0, 10).replace(/-/g, '/'))
+    date: new Date(new Date().toJSON().slice(0, 10).replace(/-/g, '/')),
+    taxRelevant: false
   };
 
   // Handle transaction information state
@@ -458,19 +477,6 @@ export default function LivePreviewExample({ toggleDialog }) {
         <div>
           {getStepContent(activeStep, handleChange, values, handleNext)}
         </div>
-        {/* <div className="card-footer mt-4 p-4 d-flex align-items-center justify-content-between bg-secondary">
-            <Button
-              disabled={activeStep === 0}
-              className="btn-primary font-weight-bold"
-              onClick={handleBack}>
-              Back
-            </Button>
-            <Button
-              className="btn-primary font-weight-bold"
-              onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-            </Button>
-          </div> */}
       </div>
     </div>
   );
