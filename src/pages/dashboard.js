@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Profile from '../components/DashboardProfile';
-import NumbersOverview from '../components/DashboardNumbersOverview';
-import Analytics from '../components/DashboardAnalyticsYear';
+import Profile from '../components/DashboardPage/DashboardProfile';
+import NumbersOverview from '../components/DashboardPage/DashboardNumbersOverview';
+import Analytics from '../components/DashboardPage/DashboardAnalyticsYear';
 
 export default function Dashboard() {
   return (
