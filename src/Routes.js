@@ -20,6 +20,7 @@ import {
 // Real Pages
 const LandingPage = lazy(() => import('./pages/landing-page'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const Calendar = lazy(() => import('./pages/calendar'));
 const ProfileSettings = lazy(() => import('./pages/profile-settings.js'));
 const Transactions = lazy(() => import('./pages/transactions'));
 const Import = lazy(() => import('./pages/import'));
@@ -112,6 +113,7 @@ const Routes = () => {
               path={[
                 '/dashboard',
                 '/transactions',
+                '/calendar',
                 '/profile-settings',
                 '/import'
               ]}>
@@ -127,6 +129,7 @@ const Routes = () => {
                       variants={pageVariants}
                       transition={pageTransition}>
                       <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/calendar" component={Calendar} />
                       <Route
                         exact
                         path="/transactions"

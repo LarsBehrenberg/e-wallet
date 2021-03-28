@@ -14,6 +14,7 @@ import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
 import BallotTwoToneIcon from '@material-ui/icons/BallotTwoTone';
+import TodayIcon from '@material-ui/icons/Today';
 
 const SidebarMenu = (props) => {
   // Redux props
@@ -163,6 +164,22 @@ const SidebarMenu = (props) => {
                   ))}
                 </ul>
               </Collapse>
+            </li>
+
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/calendar">
+                <span className="sidebar-icon">
+                  <TodayIcon />
+                </span>
+                Calendar
+                <span className="sidebar-icon-indicator sidebar-icon-indicator-right">
+                  <ChevronRightTwoToneIcon />
+                </span>
+              </NavLink>
             </li>
             <li>
               <a

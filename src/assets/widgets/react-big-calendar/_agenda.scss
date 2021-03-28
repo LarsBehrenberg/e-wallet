@@ -52,12 +52,13 @@
 
 .rbc-agenda-time-cell {
   text-transform: lowercase;
+  display: none;
 
   .rbc-continues-after:after {
-    content: ' »'
+    content: ' »';
   }
   .rbc-continues-prior:before {
-    content: '« '
+    content: '« ';
   }
 }
 
@@ -66,8 +67,6 @@
   white-space: nowrap;
 }
 
-
-
 .rbc-agenda-event-cell {
-  width: 100%
+  width: 100%;
 }
