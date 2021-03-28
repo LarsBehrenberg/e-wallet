@@ -84,7 +84,7 @@ export const removeTransactionsAction = (uid, transactions) => {
   };
 };
 
-export const importTransactionsAction = (uid, currencies, data) => {
+export const importTransactionsAction = (uid, currencies, data, setError) => {
   return (dispatch) => {
     importTransactions(uid, currencies, data)
       .then((transactions) => {
@@ -94,6 +94,7 @@ export const importTransactionsAction = (uid, currencies, data) => {
         });
       })
       .catch((err) => {
+        setError(true);
         // Catch error and reset redux store to initial empty state
         dispatch({ type: SIGN_IN_ERR }, err);
       });
