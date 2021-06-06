@@ -82,10 +82,23 @@ const Step1 = ({ handleChange, values, nextModal }) => {
     .join();
 
   const handleSubmit = async (name, value) => {
-    fetch(
-      `https://api.exchangeratesapi.io/${values.date
+    console.log(values.date.toJSON().slice(0, 10));
+    console.log(values.currency);
+    console.log(currenciesString);
+    console.log(
+      `https://api.xchangeapi.com/historical/${values.date
         .toJSON()
-        .slice(0, 10)}?base=${values.currency}&symbols=${currenciesString}`
+        .slice(0, 10)}?base=${values.currency}`
+    );
+    fetch(
+      `https://api.xchangeapi.com/historical/${values.date
+        .toJSON()
+        .slice(0, 10)}?base=${values.currency}`,
+      {
+        headers: {
+          'api-key': process.env.REACT_APP_XCHANGE_API_KEY
+        }
+      }
     )
       .then(function (response) {
         if (response.status >= 400) {
